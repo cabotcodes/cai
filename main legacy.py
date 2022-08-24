@@ -342,6 +342,10 @@ with inputs:
         btn = st.form_submit_button('Calculate Risk')
 
 
+    values = None
+    valuesRx = None
+    ageList = None
+
 
     age_from_ldl = 45
     age_to_ldl = 80
@@ -352,154 +356,26 @@ with inputs:
     if btn:
         pass
 
+    if SBP > 0.0 and LDL > 0.0:
+
+        riskList = calculate(age, sex, LDL, 0, 0,
+                             age_from_ldl, age_to_ldl, HDL, SBP, 0, 0,
+                             age_from_sbp, age_to_sbp, smoke, fmr_tob, diab, BMI, famhx)
+
+
+        e_age = riskList[1]
+        riskList = riskList[0]
+        values = [num * 100 for num in riskList]
+        ageList = [a for a in range(45, 81)]
+
+
 with risk:
         st.write(' ')
         st.write(' ')
-        #st.write('** Your risk of having a heart attack, stroke or coronary revascularization procedure:')
-
-        lpa_chart_placeholder = st.empty()
-        if SBP > 0.0 and LDL > 0.0:
-
-            riskList = calculate(age, sex, LDL, 0, 0,
-                                 age_from_ldl, age_to_ldl, HDL, SBP, 0, 0,
-                                 age_from_sbp, age_to_sbp, smoke, fmr_tob, diab, BMI, famhx)
-
-
-            e_age = riskList[1]
-            riskList = riskList[0]
-            values = [num * 100 for num in riskList]
-            ageList = [a for a in range(45, 81)]
-
-
-            x_base = ageList
-            y_base = values
-
-            lpa_graph = go.Figure(layout = go.Layout(
-                title = go.layout.Title(text = "Your risk of having a heart attack, stroke or coronary revascularization procedure:"),
-                paper_bgcolor = 'rgba(255, 255, 255,1)',
-                plot_bgcolor = 'rgb(255, 255, 255)',
-                font_color = 'rgb(18, 49, 135)',
-
-                spikedistance =  -1,
-
-                xaxis = dict(
-                    gridcolor = 'rgb(230, 230, 230)',
-                    showline = True,
-                    linecolor = 'rgb(0, 0, 0)',
-
-                    showspikes = True,
-                    spikecolor = 'rgb(150, 150, 150)',
-                    spikemode  = 'across+toaxis',
-                    spikesnap = 'data',
-                    spikedash = 'solid',
-                    spikethickness = 1,
-                    ),
-
-                yaxis = dict(
-                    gridcolor = 'rgb(230, 230, 230)',
-                    showline = True,
-                    linecolor = 'rgb(0, 0, 0)',
-                    ),
-
-                ))
-
-            sbpldl_graph = go.Figure(layout = go.Layout(
-                title = go.layout.Title(text = "How much more intensely should I lower my LDL or blood pressure<br>if I have an increased risk of heart attack and stroke caused by high Lp(a)?"),
-                paper_bgcolor = 'rgba(255, 255, 255,1)',
-                plot_bgcolor = 'rgb(255, 255, 255)',
-                font_color = 'rgb(18, 49, 135)',
-
-                spikedistance =  -1,
-
-                xaxis = dict(
-                    gridcolor = 'rgb(230, 230, 230)',
-                    showline = True,
-                    linecolor = 'rgb(0, 0, 0)',
-
-                    showspikes = True,
-                    spikecolor = 'rgb(150, 150, 150)',
-                    spikemode  = 'across+toaxis',
-                    spikesnap = 'data',
-                    spikedash = 'solid',
-                    spikethickness = 1,
-                    ),
-
-                yaxis = dict(
-                    gridcolor = 'rgb(230, 230, 230)',
-                    showline = True,
-                    linecolor = 'rgb(0, 0, 0)',
-                    ),
-
-                ))
-
-        ####################################################################################
-
-            
-            lpa = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 100.0, [20.66, 16.6][sex])
-            
-            riskList_lpa = calculate(age, sex, LDL, 0, 0, age_from_ldl, age_to_ldl,
-                                     HDL, SBP, 0, 0, age_from_sbp, age_to_sbp,
-                                     smoke, fmr_tob, diab, BMI, famhx, lpa)
-
-            riskList_lpa = riskList_lpa[0]
-            values_lpa = [num * 100 for num in riskList_lpa]
-
-            x_lpa = ageList
-            y_lpa = values_lpa
-
-            all_values = values + values_lpa
-            
-
-            lpa_graph.add_trace(go.Scatter(
-                x = x_base,
-                y = y_base,
-                line_color = 'rgb(18, 49, 135)',
-                mode='lines',
-                name='Risk without Lp(a)',
-                hovertemplate="<br>".join(
-                    ["Age: %{x}",
-                     "Risk: %{y:.1f}%",]
-                    )
-                ))
-
-            lpa_graph.add_trace(go.Scatter(
-                x = x_lpa,
-                y = y_lpa,
-                line_color = 'rgb(214, 14, 14)',
-                mode='lines',
-                name='Risk with Lp(a)',
-                hovertemplate="<br>".join(
-                    ["Age: %{x}",
-                     "Risk: %{y:.1f}%",]
-                    )
-                ))
-            st.cache()
-
-            lpa_graph.update_layout(
-                    hovermode="x",
-                    title_x=0.5,
-                    hoverlabel=dict(
-                     bgcolor="white",
-                     font_size=15
-                     ),
-                    font = dict(size = 12),
-                    xaxis_title="Age (years)",
-                    yaxis_title="Risk (%)",
-                    yaxis_range=[0, round(max(all_values)) + 0.5],
-                    legend = dict(
-                     x=0,
-                     y=1,
-                     traceorder ='reversed',
-                     bgcolor='rgba(255, 255, 255, 0.75)',
-                     font_color = 'rgb(18, 49, 135)',
-                     )
-                    )
-
-            lpa_chart_placeholder.plotly_chart(lpa_graph)
-
-
-            #st.write('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.')
-            #slide = st.slider('', 0, 130, 25)
+        st.write('** Your risk of having a heart attack, stroke or coronary revascularization procedure:')
+        st.image('graphEG.png')
+        st.write('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.')
+        slide = st.slider('', 0, 130, 25)
 
 with text:
         st.write(' ')
@@ -513,99 +389,19 @@ with text:
         st.write('Using the slider bars below, you can estimate how much you would have to lower your LDL or blood pressure to reduce your risk of heart attack and stroke by the same amount as the increased risk caused by your Lp(a) level. This information can help guide you about how much more intensely you need to lower your LDL and blood pressure level to improve your cardiovascular health despite having high Lp(a) levels.')
 with graph:
         st.write(' ')
-        #st.write('** How much more intensely should I lower my LDL or blood pressure if I have an increased risk of heart attack and stroke caused by high Lp(a)?')
-
-    ####################################################################################
-
-        sbpldl_chart_placeholder = st.empty()
+        st.write('** How much more intensely should I lower my LDL or blood pressure if I have an increased risk of heart attack and stroke caused by high Lp(a)?')
+        st.image('graphEG.png')
+        
         col1, col2 = st.columns(2)
+
         with col1:
-            #st.write('How much should I lower my LDL?') 
-            ldl_dec = st.slider('How much should I lower my LDL?', 0.0, LDL, 0.0, step = 0.5)
+                st.write('How much should I lower my LDL?')
+                slider = st.slider('', 0, 60, 60)
 
         with col2:
-            #st.write('How much should I lower my blood pressure?')
-            sbp_dec = st.slider('How much should I lower my blood pressure?', 0, int(SBP-(90)), 0, step = 1)
+                st.write('How much should I lower my blood pressure?')
+                slider1 = st.slider('', 0, 30, 10)
 
-        ldl_treatment = 1 if ldl_dec != 0 else 0
-        sbp_treatment = 1 if sbp_dec != 0 else 0
-        
-        riskList_Rx = calculate(age, sex, LDL, ldl_treatment, ldl_dec * -1, age_from_ldl, age_to_ldl,
-                                HDL, SBP, sbp_treatment, sbp_dec * -1, age_from_sbp, age_to_sbp,
-                                smoke, fmr_tob, diab, BMI, famhx, None)
-
-
-        print(age, sex, LDL, ldl_treatment, ldl_dec * -1, age_from_ldl, age_to_ldl,
-                                HDL, SBP, sbp_treatment, sbp_dec * -1, age_from_sbp, age_to_sbp,
-                                smoke, fmr_tob, diab, BMI, famhx, None)
-
-        riskList_Rx = riskList_Rx[0]
-        values_Rx = [num * 100 for num in riskList_Rx]
-
-        x_Rx = ageList
-        y_Rx = values_Rx
-
-        all_values = values + values_lpa + values_Rx
-        
-
-        sbpldl_graph.add_trace(go.Scatter(
-            x = x_base,
-            y = y_base,
-            line_color = 'rgb(18, 49, 135)',
-            mode='lines',
-            name='Risk without Lp(a)',
-            hovertemplate="<br>".join(
-                ["Age: %{x}",
-                 "Risk: %{y:.1f}%",]
-                )
-            ))
-
-##        sbpldl_graph.add_trace(go.Scatter(
-##            x = x_lpa,
-##            y = y_lpa,
-##            line_color = 'rgb(214, 14, 14)',
-##            mode='lines',
-##            name='Risk with Lp(a)',
-##            hovertemplate="<br>".join(
-##                ["Age: %{x}",
-##                 "Risk: %{y:.1f}%",]
-##                )
-##            ))
-
-        sbpldl_graph.add_trace(go.Scatter(
-            x = x_Rx,
-            y = y_Rx,
-            line_color = 'rgb(14, 214, 14)',
-            mode='lines',
-            name='Risk with LDL/SBP reductions',
-            hovertemplate="<br>".join(
-                ["Age: %{x}",
-                 "Risk: %{y:.1f}%",]
-                )
-            ))
-        st.cache()
-
-        sbpldl_graph.update_layout(hovermode="x",
-                title_x=0.5,
-                hoverlabel=dict(
-                 bgcolor="white",
-                 font_size=15
-                 ),
-                font = dict(size = 12),
-                xaxis_title="Age (years)",
-                yaxis_title="Risk (%)",
-                yaxis_range=[0, round(max(all_values)) + 0.5],
-                legend = dict(
-                 x=0,
-                 y=1,
-                 traceorder ='reversed',
-                 bgcolor='rgba(255, 255, 255, 0.75)',
-                 font_color = 'rgb(18, 49, 135)',
-                 )
-                )
-
-        sbpldl_chart_placeholder.plotly_chart(sbpldl_graph)
-           
 # TESTING 2 SLIDERS IN THE SAME LINE
 
 # END OF TEST
