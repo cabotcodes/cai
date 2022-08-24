@@ -518,93 +518,95 @@ with graph:
     ####################################################################################
 
         sbpldl_chart_placeholder = st.empty()
-        col1, col2 = st.columns(2)
-        with col1:
-            #st.write('How much should I lower my LDL?') 
-            ldl_dec = st.slider('How much should I lower my LDL?', 0.0, LDL, 0.0, step = 0.5)
+        if SBP > 0.0 and LDL > 0.0:
 
-        with col2:
-            #st.write('How much should I lower my blood pressure?')
-            sbp_dec = st.slider('How much should I lower my blood pressure?', 0, int(SBP-(90)), 0, step = 1)
+            col1, col2 = st.columns(2)
+            with col1:
+                #st.write('How much should I lower my LDL?') 
+                ldl_dec = st.slider('How much should I lower my LDL?', 0.0, LDL, 0.0, step = 0.5)
 
-        ldl_treatment = 1 if ldl_dec != 0 else 0
-        sbp_treatment = 1 if sbp_dec != 0 else 0
-        
-        riskList_Rx = calculate(age, sex, LDL, ldl_treatment, ldl_dec * -1, age_from_ldl, age_to_ldl,
-                                HDL, SBP, sbp_treatment, sbp_dec * -1, age_from_sbp, age_to_sbp,
-                                smoke, fmr_tob, diab, BMI, famhx, None)
+            with col2:
+                #st.write('How much should I lower my blood pressure?')
+                sbp_dec = st.slider('How much should I lower my blood pressure?', 0, int(SBP-(90)), 0, step = 1)
+
+            ldl_treatment = 1 if ldl_dec != 0 else 0
+            sbp_treatment = 1 if sbp_dec != 0 else 0
+            
+            riskList_Rx = calculate(age, sex, LDL, ldl_treatment, ldl_dec * -1, age_from_ldl, age_to_ldl,
+                                    HDL, SBP, sbp_treatment, sbp_dec * -1, age_from_sbp, age_to_sbp,
+                                    smoke, fmr_tob, diab, BMI, famhx, None)
 
 
-        print(age, sex, LDL, ldl_treatment, ldl_dec * -1, age_from_ldl, age_to_ldl,
-                                HDL, SBP, sbp_treatment, sbp_dec * -1, age_from_sbp, age_to_sbp,
-                                smoke, fmr_tob, diab, BMI, famhx, None)
+            print(age, sex, LDL, ldl_treatment, ldl_dec * -1, age_from_ldl, age_to_ldl,
+                                    HDL, SBP, sbp_treatment, sbp_dec * -1, age_from_sbp, age_to_sbp,
+                                    smoke, fmr_tob, diab, BMI, famhx, None)
 
-        riskList_Rx = riskList_Rx[0]
-        values_Rx = [num * 100 for num in riskList_Rx]
+            riskList_Rx = riskList_Rx[0]
+            values_Rx = [num * 100 for num in riskList_Rx]
 
-        x_Rx = ageList
-        y_Rx = values_Rx
+            x_Rx = ageList
+            y_Rx = values_Rx
 
-        all_values = values + values_lpa + values_Rx
-        
+            all_values = values + values_lpa + values_Rx
+            
 
-        sbpldl_graph.add_trace(go.Scatter(
-            x = x_base,
-            y = y_base,
-            line_color = 'rgb(18, 49, 135)',
-            mode='lines',
-            name='Risk without Lp(a)',
-            hovertemplate="<br>".join(
-                ["Age: %{x}",
-                 "Risk: %{y:.1f}%",]
-                )
-            ))
+            sbpldl_graph.add_trace(go.Scatter(
+                x = x_base,
+                y = y_base,
+                line_color = 'rgb(18, 49, 135)',
+                mode='lines',
+                name='Risk without Lp(a)',
+                hovertemplate="<br>".join(
+                    ["Age: %{x}",
+                     "Risk: %{y:.1f}%",]
+                    )
+                ))
 
-##        sbpldl_graph.add_trace(go.Scatter(
-##            x = x_lpa,
-##            y = y_lpa,
-##            line_color = 'rgb(214, 14, 14)',
-##            mode='lines',
-##            name='Risk with Lp(a)',
-##            hovertemplate="<br>".join(
-##                ["Age: %{x}",
-##                 "Risk: %{y:.1f}%",]
-##                )
-##            ))
+    ##        sbpldl_graph.add_trace(go.Scatter(
+    ##            x = x_lpa,
+    ##            y = y_lpa,
+    ##            line_color = 'rgb(214, 14, 14)',
+    ##            mode='lines',
+    ##            name='Risk with Lp(a)',
+    ##            hovertemplate="<br>".join(
+    ##                ["Age: %{x}",
+    ##                 "Risk: %{y:.1f}%",]
+    ##                )
+    ##            ))
 
-        sbpldl_graph.add_trace(go.Scatter(
-            x = x_Rx,
-            y = y_Rx,
-            line_color = 'rgb(14, 214, 14)',
-            mode='lines',
-            name='Risk with LDL/SBP reductions',
-            hovertemplate="<br>".join(
-                ["Age: %{x}",
-                 "Risk: %{y:.1f}%",]
-                )
-            ))
-        st.cache()
+            sbpldl_graph.add_trace(go.Scatter(
+                x = x_Rx,
+                y = y_Rx,
+                line_color = 'rgb(14, 214, 14)',
+                mode='lines',
+                name='Risk with LDL/SBP reductions',
+                hovertemplate="<br>".join(
+                    ["Age: %{x}",
+                     "Risk: %{y:.1f}%",]
+                    )
+                ))
+            st.cache()
 
-        sbpldl_graph.update_layout(hovermode="x",
-                title_x=0.5,
-                hoverlabel=dict(
-                 bgcolor="white",
-                 font_size=15
-                 ),
-                font = dict(size = 12),
-                xaxis_title="Age (years)",
-                yaxis_title="Risk (%)",
-                yaxis_range=[0, round(max(all_values)) + 0.5],
-                legend = dict(
-                 x=0,
-                 y=1,
-                 traceorder ='reversed',
-                 bgcolor='rgba(255, 255, 255, 0.75)',
-                 font_color = 'rgb(18, 49, 135)',
-                 )
-                )
+            sbpldl_graph.update_layout(hovermode="x",
+                    title_x=0.5,
+                    hoverlabel=dict(
+                     bgcolor="white",
+                     font_size=15
+                     ),
+                    font = dict(size = 12),
+                    xaxis_title="Age (years)",
+                    yaxis_title="Risk (%)",
+                    yaxis_range=[0, round(max(all_values)) + 0.5],
+                    legend = dict(
+                     x=0,
+                     y=1,
+                     traceorder ='reversed',
+                     bgcolor='rgba(255, 255, 255, 0.75)',
+                     font_color = 'rgb(18, 49, 135)',
+                     )
+                    )
 
-        sbpldl_chart_placeholder.plotly_chart(sbpldl_graph)
+            sbpldl_chart_placeholder.plotly_chart(sbpldl_graph)
            
 # TESTING 2 SLIDERS IN THE SAME LINE
 
