@@ -435,7 +435,7 @@ with risk:
         ####################################################################################
 
             
-            lpa = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 100.0, [20.66, 16.6][sex])
+            lpa = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 500.0, [20.66, 16.6][sex])
             
             riskList_lpa = calculate(age, sex, LDL, 0, 0, age_from_ldl, age_to_ldl,
                                      HDL, SBP, 0, 0, age_from_sbp, age_to_sbp,
@@ -527,7 +527,7 @@ with graph:
 
             with col2:
                 #st.write('How much should I lower my blood pressure?')
-                sbp_dec = st.slider('How much should I lower my blood pressure?', 0, int(SBP-(90)), 0, step = 1)
+                sbp_dec = st.slider('How much should I lower my blood pressure?', 0, 30, 0, step = 1)
 
             ldl_treatment = 1 if ldl_dec != 0 else 0
             sbp_treatment = 1 if sbp_dec != 0 else 0
@@ -550,6 +550,19 @@ with graph:
             all_values = values + values_lpa + values_Rx
             
 
+
+            sbpldl_graph.add_trace(go.Scatter(
+                x = x_Rx,
+                y = y_Rx,
+                line_color = 'rgb(14, 214, 14)',
+                mode='lines',
+                name='Risk after lowering LDL or blood pressure',
+                hovertemplate="<br>".join(
+                    ["Age: %{x}",
+                     "Risk: %{y:.1f}%",]
+                    )
+                ))
+            
             sbpldl_graph.add_trace(go.Scatter(
                 x = x_base,
                 y = y_base,
@@ -562,29 +575,19 @@ with graph:
                     )
                 ))
 
-    ##        sbpldl_graph.add_trace(go.Scatter(
-    ##            x = x_lpa,
-    ##            y = y_lpa,
-    ##            line_color = 'rgb(214, 14, 14)',
-    ##            mode='lines',
-    ##            name='Risk with Lp(a)',
-    ##            hovertemplate="<br>".join(
-    ##                ["Age: %{x}",
-    ##                 "Risk: %{y:.1f}%",]
-    ##                )
-    ##            ))
-
             sbpldl_graph.add_trace(go.Scatter(
-                x = x_Rx,
-                y = y_Rx,
-                line_color = 'rgb(14, 214, 14)',
+                x = x_lpa,
+                y = y_lpa,
+                line_color = 'rgb(214, 14, 14)',
                 mode='lines',
-                name='Risk with LDL/SBP reductions',
+                name='Risk with Lp(a)',
                 hovertemplate="<br>".join(
                     ["Age: %{x}",
                      "Risk: %{y:.1f}%",]
                     )
                 ))
+
+
             st.cache()
 
             sbpldl_graph.update_layout(hovermode="x",
