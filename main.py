@@ -217,7 +217,20 @@ st.set_page_config(page_title='c.AI',
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
-            footer {visibility: visible;}
+            footer {
+	
+                visibility: hidden;
+	
+            }
+            footer:after {
+                content:'Copyright © TBFerence & CKFERENCE 2022'; 
+                visibility: visible;
+                display: block;
+                position: relative;
+                padding: 5px;
+                top: 2px;
+            }
+            
             header {visibility: hidden;}
             </style>
             """
@@ -272,17 +285,18 @@ with title:
             st.write(' ')
             
         st.markdown("<h1 style='text-align: center; color: black;'>Lp(a) Clinical Guidance<h1>", unsafe_allow_html=True)
+        st.markdown("<h6 style='text-align: center; color: grey;'>This website will help you estimate how much your Lp(a) level increases your risk of having a heart attack or stroke, and provide specific guidance about what you can do to lower your risk if your Lp(a) level is elevated.<h6>", unsafe_allow_html=True)
 #Risk and Benefit Algorithm using Causal AI
 #CONTAINER FOR TEXT EXPLANATION
 
 with explanation:
         
-        st.subheader("Estimating risk of Heart Attack & Stroke caused by Lp(a)")
+        st.subheader("Estimating the risk of Heart Attack & Stroke caused by Lp(a)")
         #st.write("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?")
         st.write("Lp(a) is a cholesterol-carrying molecule that circulates in the blood and can damage your arteries, causing a heart attack or stroke. You can measure how much your blood level of Lp(a) increases your risk of having a heart attack or stroke using this app.") 
-        st.write("Enter your health information in the boxes below. The graph will show you your risk of having a heart attack, stroke, or undergoing a procedure to clear a blocked artery at any age up to age 80.")
+        st.write("Enter your health information in the boxes below. The graph will show you your risk of having a heart attack, stroke, or undergoing a procedure to clear a blocked artery at any age up to age 80. The only way to know how much your Lp(a) level increases your risk of having a heart attack or stroke is to measure it. Persons with high Lp(a) levels may be at increased risk and not even know it.")
         st.write("You can then enter your Lp(a) level using the slider bar below the graph to see how much your level of Lp(a) increases your risk of having a heart attack or stroke.")
-        st.write("The only way to know how much your Lp(a) level increases your risk of having a heart attack or stroke is to measure it. Persons with high Lp(a) levels may be at increased risk and not even know it.")
+        
         
         
 # CONTAINER PURELY FOR TESTING. WILL BE COMMENTED OUT
@@ -545,13 +559,14 @@ with risk:
                 st.write(f"risk with Lp(a) value of {round(lpa, 2)} is {round(values_lpa[-1], 1)}%")
             else:
                 st.write(f"risk with Lp(a) value of {round(LPA, 2)} is {round(values_lpa[-1], 1)}%")
-
+        else:
+            st.write("You must enter at least your age, sex, LDL and SBP levels to estimate your risk.")
 
 
             #st.write('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.')
             #slide = st.slider('', 0, 130, 25)
-        else:
-            st.subheader("Please input your LDL and SBP values.")
+        #else:
+            #st.write("You must enter your age, sex, LDL and SBP levels to estimate your risk.")
 with text:
         st.write(' ')
         st.subheader('What to do if your Lp(a) level increases your risk of having a heart attack or stroke')
