@@ -214,18 +214,14 @@ st.set_page_config(page_title='c.AI',
     page_icon=':heart:',
     layout="centered")
 
-##hide_st_style = """
-##            <style>
-##            #MainMenu {visibility: hidden;}
-##            footer {visibility: visible;
-##            }
-##            footer:after{
-##                content: 'Copyright © T B Ference, C K Ference'
-##            
-##            header {visibility: hidden;}
-##            </style>
-##            """
-##st.markdown(hide_st_style, unsafe_allow_html=True)
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: visible;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 st.markdown(
         f"""
