@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
+import matplotlib
 import math
 import copy
 ############################## Data ##############################
@@ -28,7 +29,7 @@ mean_SBP_list = [women_mean_SBP, men_mean_SBP]
 ############################## Data ##############################
 
 ########################### Algorithm ###########################
-@st.cache
+@st.cache(hash_funcs = {matplotlib.figure.Figure: lambda _: None})
 def calculate(age, sex, ldl, ldl_rx, ldl_dec, age_start_rx_ldl, age_stop_rx_ldl, hdl, sbp, sbp_rx, sbp_dec, age_start_rx_sbp, age_stop_rx_sbp, smoke, fmr_tob, prevalent_diabetes_35, bmi, fam_hx_chd, Lp_a = None):
     if Lp_a == None:
         Lp_a = [20.66, 16.6][sex]
@@ -191,20 +192,40 @@ def calculate(age, sex, ldl, ldl_rx, ldl_dec, age_start_rx_ldl, age_stop_rx_ldl,
 
     f_t.insert(0, 0)
     return [f_t, 45 + sum(e_t)]
+
+def calc_BMI(height, weight, units_height, units_weight):
+    if units_height == "in":
+        h = height * 2.54
+    else:
+        h = height
+        
+    if units_weight == "lbs":
+        w = weight / 2.2
+    else:
+        w = weight
+
+
+    BMI = round(w/((h/100)**2))
+
+    return BMI
 ########################### Algorithm ###########################
 
 st.set_page_config(page_title='c.AI',
     page_icon=':heart:',
     layout="centered")
 
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
+##hide_st_style = """
+##            <style>
+##            #MainMenu {visibility: hidden;}
+##            footer {visibility: visible;
+##            }
+##            footer:after{
+##                content: 'Copyright © T B Ference, C K Ference'
+##            
+##            header {visibility: hidden;}
+##            </style>
+##            """
+##st.markdown(hide_st_style, unsafe_allow_html=True)
 
 st.markdown(
         f"""
@@ -254,8 +275,8 @@ with title:
         with col3:
             st.write(' ')
             
-        st.markdown("<h1 style='text-align: center; color: black;'>Lp(a) Risk and Benefit Algorithm using Causal AI<h1>", unsafe_allow_html=True)
-
+        st.markdown("<h1 style='text-align: center; color: black;'>Lp(a) Clinical Guidance<h1>", unsafe_allow_html=True)
+#Risk and Benefit Algorithm using Causal AI
 #CONTAINER FOR TEXT EXPLANATION
 
 with explanation:
@@ -282,8 +303,16 @@ with explanation:
 # CONTAINER FOR INPUTS
 
 with inputs:
-    st.subheader('**Enter your health information below**')
 
+    st.subheader('**Enter your health information below**')
+    unit_col1, unit_col2, unit_col3 = st.columns([2, 1, 1])
+    with unit_col1:
+        units_LDL = st.radio("Cholesterol units:", ["mmol/L", "mg/dL"], horizontal = True)
+    with unit_col2:
+        units_height = st.radio("Height units:", ["cm", "in"], horizontal = True)
+    with unit_col3:
+        units_weight = st.radio("Weight units:", ["kg", "lbs"], horizontal = True)
+        
     with st.form('Inputs'):
 
         col1, col2 = st.columns(2)
@@ -295,11 +324,18 @@ with inputs:
             if sex != '-':
                 sex = int(sex == 'Male')
 
-            age = st.number_input('Age (years) (ages 45-70)', step = 1)
+            age = st.number_input('Age (years) (ages 30-80)', step = 1)
             st.write('Cholesterol')
-            TC = st.number_input('Total Cholesterol (mmol/L) (range 2.6-10.3)', step = 0.1)
-            LDL = st.number_input('LDL Cholesterol (mmol/L) (range 2.6-3.4)', step = 0.1)
-            HDL = st.number_input('HDL Cholesterol (mmol/L) (range 0.5-3.1)', step = 0.1)
+
+            if units_LDL == "mmol/L":            
+                TC = st.number_input('Total Cholesterol (mmol/L) (range 3.5 - 8.0)', step = 0.1)
+                LDL = st.number_input('LDL Cholesterol (mmol/L) (range 2.0 - 5.0)', step = 0.1)
+                HDL = st.number_input('HDL Cholesterol (mmol/L) (range 0.6 - 2.8)', step = 0.1)
+            else:
+                TC = st.number_input('Total Cholesterol (mg/dL) (range 135 - 300)', step = 1)
+                LDL = st.number_input('LDL Cholesterol (mg/dL) (range 80 - 200)', step = 1)
+                HDL = st.number_input('HDL Cholesterol (mg/dL) (range 25 - 100)', step = 1)
+
             if TC != 0.0 and HDL != 0.0:
                 nHDL = TC - HDL
             #st.write(' ')
@@ -315,7 +351,7 @@ with inputs:
             height = st.number_input('Height (cm)', step = 0.1)
             weight = st.number_input('Weight (kg)', step = 0.1)
             if height != 0.0 and weight != 0.0:
-                BMI = round(weight/((height/100)**2))
+                BMI = calc_BMI(height, weight, units_height, units_weight)
             #st.write(' ')
             #    st.write('BMI: ', BMI)
             #else:
@@ -360,8 +396,16 @@ with risk:
         lpa_chart_placeholder = st.empty()
         if SBP > 0.0 and LDL > 0.0:
 
-            riskList = calculate(age, sex, LDL, 0, 0,
-                                 age_from_ldl, age_to_ldl, HDL, SBP, 0, 0,
+            if units_LDL == "mmol/L":
+                ldl = LDL
+                hdl = HDL
+            else:
+                ldl = LDL / 38.67
+                hdl = HDL / 38.67
+
+
+            riskList = calculate(age, sex, ldl, 0, 0,
+                                 age_from_ldl, age_to_ldl, hdl, SBP, 0, 0,
                                  age_from_sbp, age_to_sbp, smoke, fmr_tob, diab, BMI, famhx)
 
 
@@ -434,11 +478,15 @@ with risk:
 
         ####################################################################################
 
+            units_lpa = st.radio("Lp(a) units:", ["nmol/L", "mg/dL"], horizontal = True)
+            if units_lpa == "nmol/L":
+                lpa = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 500.0, [20.66, 16.6][sex])
+            else:
+                LPA = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 1000.0, [20.66*2.15, 16.6*2.15][sex])
+                lpa = LPA / 2.15
             
-            lpa = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 500.0, [20.66, 16.6][sex])
-            
-            riskList_lpa = calculate(age, sex, LDL, 0, 0, age_from_ldl, age_to_ldl,
-                                     HDL, SBP, 0, 0, age_from_sbp, age_to_sbp,
+            riskList_lpa = calculate(age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
+                                     hdl, SBP, 0, 0, age_from_sbp, age_to_sbp,
                                      smoke, fmr_tob, diab, BMI, famhx, lpa)
 
             riskList_lpa = riskList_lpa[0]
@@ -497,10 +545,17 @@ with risk:
 
             lpa_chart_placeholder.plotly_chart(lpa_graph)
 
+            if units_lpa == "nmol/L":
+                st.write(f"risk with Lp(a) value of {round(lpa, 2)} is {round(values_lpa[-1], 1)}%")
+            else:
+                st.write(f"risk with Lp(a) value of {round(LPA, 2)} is {round(values_lpa[-1], 1)}%")
+
+
 
             #st.write('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.')
             #slide = st.slider('', 0, 130, 25)
-
+        else:
+            st.subheader("Please input your LDL and SBP values.")
 with text:
         st.write(' ')
         st.subheader('What to do if your Lp(a) level increases your risk of having a heart attack or stroke')
@@ -522,8 +577,11 @@ with graph:
 
             col1, col2 = st.columns(2)
             with col1:
-                #st.write('How much should I lower my LDL?') 
-                ldl_dec = st.slider('How much should I lower my LDL?', 0.0, LDL, 0.0, step = 0.5)
+                if units_LDL == "mmol/L":
+                    ldl_dec = st.slider('How much should I lower my LDL?', 0.0, ldl, 0.0, step = 0.5)
+                else:
+                    LDL_DEC = st.slider('How much should I lower my LDL?', 0, LDL, 0, step = 1)
+                    ldl_dec = LDL_DEC / 38.67
 
             with col2:
                 #st.write('How much should I lower my blood pressure?')
@@ -532,13 +590,13 @@ with graph:
             ldl_treatment = 1 if ldl_dec != 0 else 0
             sbp_treatment = 1 if sbp_dec != 0 else 0
             
-            riskList_Rx = calculate(age, sex, LDL, ldl_treatment, ldl_dec * -1, age_from_ldl, age_to_ldl,
-                                    HDL, SBP, sbp_treatment, sbp_dec * -1, age_from_sbp, age_to_sbp,
+            riskList_Rx = calculate(age, sex, ldl, ldl_treatment, ldl_dec * -1, age_from_ldl, age_to_ldl,
+                                    hdl, SBP, sbp_treatment, sbp_dec * -1, age_from_sbp, age_to_sbp,
                                     smoke, fmr_tob, diab, BMI, famhx, None)
 
 
-            print(age, sex, LDL, ldl_treatment, ldl_dec * -1, age_from_ldl, age_to_ldl,
-                                    HDL, SBP, sbp_treatment, sbp_dec * -1, age_from_sbp, age_to_sbp,
+            print(age, sex, ldl, ldl_treatment, ldl_dec * -1, age_from_ldl, age_to_ldl,
+                                    hdl, SBP, sbp_treatment, sbp_dec * -1, age_from_sbp, age_to_sbp,
                                     smoke, fmr_tob, diab, BMI, famhx, None)
 
             riskList_Rx = riskList_Rx[0]
@@ -610,6 +668,22 @@ with graph:
                     )
 
             sbpldl_chart_placeholder.plotly_chart(sbpldl_graph)
+
+            if units_LDL == "mmol/L":
+                if ldl_dec != 0:
+                    st.write(f"risk lowering LDL by {ldl_dec} is {round(values_Rx[-1], 1)}%")
+                if sbp_dec != 0:
+                    st.write(f"risk lowering SBP by {sbp_dec} is {round(values_Rx[-1], 1)}%")
+                if sbp_dec != 0 and ldl_dec != 0:
+                    st.write(f"risk lowering SBP by {sbp_dec} and LDL by {ldl_dec} is {round(values_Rx[-1], 1)}%")
+            else:
+                if ldl_dec != 0:
+                    st.write(f"risk lowering LDL by {LDL_DEC} is {round(values_Rx[-1], 1)}%")
+                if sbp_dec != 0:
+                    st.write(f"risk lowering SBP by {sbp_dec} is {round(values_Rx[-1], 1)}%")
+                if sbp_dec != 0 and ldl_dec != 0:
+                    st.write(f"risk lowering SBP by {sbp_dec} and LDL by {LDL_DEC} is {round(values_Rx[-1], 1)}%")
+
            
 # TESTING 2 SLIDERS IN THE SAME LINE
 
