@@ -308,7 +308,7 @@ with title:
   
         st.markdown("<h1 style='text-align: center; color: black;'>Lp(a) Clinical Guidance<h1>", unsafe_allow_html=True)
         #st.markdown("<h6 style='text-align: center; color: grey;'>This website will help you estimate how much your Lp(a) level increases your risk of having a heart attack or stroke, and provide you with specific guidance about what you can do to lower your risk if your Lp(a) level is elevated.<h6>", unsafe_allow_html=True)
-        st.write('This website will determine how much your Lp(a) level increases your risk of having a heart attack or stroke, and provide you with specific guidance about what you can do to lower your risk if your Lp(a) level is elevated.')
+        st.write('This website will help you determine how much your Lp(a) level increases your risk of having a heart attack or stroke, and provide you with specific guidance about what you can do to lower your risk if your Lp(a) level is elevated.')
 #Risk and Benefit Algorithm using Causal AI
 #CONTAINER FOR TEXT EXPLANATION
 
