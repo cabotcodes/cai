@@ -421,10 +421,10 @@ with inputs:
         st.session_state.pressed = True
 
 
-    age_from_ldl = 45
+    age_from_ldl = 30
     age_to_ldl = 80
 
-    age_from_sbp = 45
+    age_from_sbp = 30
     age_to_sbp = 80
 
 
@@ -451,10 +451,9 @@ with risk:
                                  age_from_sbp, age_to_sbp, smoke, fmr_tob, diab, BMI, famhx)
 
 
-            e_age = riskList[1]
             riskList = riskList[0]
-            values = [num * 100 for num in riskList]
-            ageList = [a for a in range(45, 81)]
+            values = [num * 100 for num in riskList][1:]
+            ageList = [a for a in range(30, 81)]
 
 
             x_base = ageList
@@ -523,7 +522,6 @@ with risk:
             print('\n\n\nbefore:', ', '.join([str(s) for s in [age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
                   hdl, SBP, 0, 0, age_from_sbp, age_to_sbp,
                   smoke, fmr_tob, diab, BMI, famhx, '']]))
-            print(values[-1])
 
             units_lpa = st.radio("Lp(a) units:", ["nmol/L", "mg/dL"], horizontal = True)
             if units_lpa == "nmol/L":
@@ -532,16 +530,16 @@ with risk:
                 LPA = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 1000.0, [20.66*2.15, 16.6*2.15][sex])
                 lpa = LPA / 2.15
 
-            print('after: ', ', '.join([str(s) for s in [age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
-                  hdl, SBP, 0, 0, age_from_sbp, age_to_sbp,
-                  smoke, fmr_tob, diab, BMI, famhx, lpa]]))
+            #print('after: ', ', '.join([str(s) for s in [age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
+            #      hdl, SBP, 0, 0, age_from_sbp, age_to_sbp,
+            #      smoke, fmr_tob, diab, BMI, famhx, lpa]]))
             
             riskList_lpa = calculate(age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
                                      hdl, SBP, 0, 0, age_from_sbp, age_to_sbp,
                                      smoke, fmr_tob, diab, BMI, famhx, lpa)
 
             riskList_lpa = riskList_lpa[0]
-            values_lpa = [num * 100 for num in riskList_lpa]
+            values_lpa = [num * 100 for num in riskList_lpa][1:]
             print(values_lpa[-1])
 
             x_lpa = ageList
@@ -651,7 +649,7 @@ with risk:
 
 
             riskList_Rx = riskList_Rx[0]
-            values_Rx = [num * 100 for num in riskList_Rx]
+            values_Rx = [num * 100 for num in riskList_Rx][1:]
 
             x_Rx = ageList
             y_Rx = values_Rx
