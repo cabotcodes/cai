@@ -528,8 +528,8 @@ with risk:
             if units_lpa == "nmol/L":
                 lpa = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 500.0, [20.66, 16.6][sex])
             else:
-                LPA = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 1000.0, [20.66*2.15, 16.6*2.15][sex])
-                lpa = LPA / 2.15
+                LPA = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 250.0, [20.66*2.15, 16.6*2.15][sex])
+                lpa = LPA * 2.15
 
             #print('after: ', ', '.join([str(s) for s in [age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
             #      hdl, SBP, 0, 0, age_from_sbp, age_to_sbp,
@@ -599,10 +599,10 @@ with risk:
             lpa_chart_placeholder.plotly_chart(lpa_graph, config = config)
 
             if units_lpa == "nmol/L":
-                st.markdown(f"<h5 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(lpa, 2)} {units_lpa} is {round(values_lpa[-1], 1)}% <h5>", unsafe_allow_html=True)
+                st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(lpa, 2)} {units_lpa} is {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
                 #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(lpa, 2)} {units_lpa} is **{round(values_lpa[-1], 1)}%**")
             else:
-                st.markdown(f"<h5 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is {round(values_lpa[-1], 1)}% <h5>", unsafe_allow_html=True)
+                st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
                 #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is **{round(values_lpa[-1], 1)}%**")
         else:
             st.write("You must enter at least your age, sex, LDL and SBP levels to estimate your risk.")
@@ -727,32 +727,32 @@ with risk:
 
             #LPA message in second graph (can comment out if needed)
             if units_lpa == "nmol/L":
-                st.markdown(f"<h5 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(lpa, 2)} {units_lpa} is {round(values_lpa[-1], 1)}% <h5>", unsafe_allow_html=True)
+                st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(lpa, 2)} {units_lpa} is {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
                 #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(lpa, 2)} {units_lpa} is **{round(values_lpa[-1], 1)}**%")
             else:
-                st.markdown(f"<h5 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is {round(values_lpa[-1], 1)}% <h5>", unsafe_allow_html=True)
+                st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
                 #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is **{round(values_lpa[-1], 1)}%**")
 
 
             if units_LDL == "mmol/L":
                 if sbp_dec == 0 and ldl_dec != 0:
-                    st.markdown(f"<h5 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering LDL by {ldl_dec} {units_LDL} is {round(values_Rx[-1], 1)}% <h5>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering LDL by {ldl_dec} {units_LDL} is {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering LDL by {ldl_dec} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
                 if sbp_dec != 0 and ldl_dec == 0:
-                    st.markdown(f"<h5 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is {round(values_Rx[-1], 1)}% <h5>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is **{round(values_Rx[-1], 1)}%**")
                 if sbp_dec != 0 and ldl_dec != 0:
-                    st.markdown(f"<h5 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {ldl_dec} {units_LDL} is {round(values_Rx[-1], 1)}% <h5>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {ldl_dec} {units_LDL} is {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {ldl_dec} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
             else:
                 if sbp_dec == 0 and ldl_dec != 0:
-                    st.markdown(f"<h5 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering LDL by {LDL_DEC} {units_LDL} is **{round(values_Rx[-1], 1)}% <h5>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering LDL by {LDL_DEC} {units_LDL} is **{round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering LDL by {LDL_DEC} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
                 if sbp_dec != 0 and ldl_dec == 0:
-                    st.markdown(f"<h5 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is {round(values_Rx[-1], 1)}% <h5>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is **{round(values_Rx[-1], 1)}%**")
                 if sbp_dec != 0 and ldl_dec != 0:
-                    st.markdown(f"<h5 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {LDL_DEC} {units_LDL} is {round(values_Rx[-1], 1)}% <h5>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {LDL_DEC} {units_LDL} is {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {LDL_DEC} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
 
            
