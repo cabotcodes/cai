@@ -639,7 +639,7 @@ with risk:
                 if units_LDL == "mmol/L":
                     ldl_dec = st.slider('How much should I lower my LDL?', 0.0, 1.5, 0.0, step = 0.5)
                 else:
-                    LDL_DEC = st.slider('How much should I lower my LDL?', 0, 1.5 * 38.67, 0, step = 1)
+                    LDL_DEC = st.slider('How much should I lower my LDL?', 0.0, 60.0, 0.0, step = 0.1)
                     ldl_dec = LDL_DEC / 38.67
 
             with col2:
@@ -750,7 +750,7 @@ with risk:
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {ldl_dec} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
             else:
                 if sbp_dec == 0 and ldl_dec != 0:
-                    st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering LDL by {LDL_DEC} {units_LDL} is **{round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering LDL by {LDL_DEC} {units_LDL} is {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering LDL by {LDL_DEC} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
                 if sbp_dec != 0 and ldl_dec == 0:
                     st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
