@@ -667,7 +667,7 @@ with risk:
                 st.markdown(f"<h4 style='color:#507796;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
                 #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is **{round(values_lpa[-1], 1)}%**")
         else:
-            st.error("You must enter at least your age, sex, LDL and SBP levels to estimate your risk.")
+            st.error("Please complete all the inputs in the boxes above.")
 
 
             #st.write('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.')
