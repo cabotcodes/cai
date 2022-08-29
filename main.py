@@ -310,7 +310,7 @@ with title:
             st.write(' ')
 
         with col3:
-            st.image('Logo2.png')
+            st.image('2am.png')
 
         with col4:
             st.write(' ')
