@@ -600,6 +600,18 @@ with risk:
             
 
             lpa_graph.add_trace(go.Scatter(
+                x = x_base,
+                y = y_base,
+                line_color = 'rgb(18, 49, 135)',
+                mode='lines',
+                name='Your risk without including the effect of Lp(a)',
+                hovertemplate="<br>".join(
+                    ["Age: %{x}",
+                     "Risk: %{y:.1f}%",]
+                    )
+                ))
+
+            lpa_graph.add_trace(go.Scatter(
                 x = x_lpa,
                 y = y_lpa,
                 line_color = 'rgb(214, 14, 14)',
@@ -611,17 +623,6 @@ with risk:
                     )
                 ))
 
-            lpa_graph.add_trace(go.Scatter(
-                x = x_base,
-                y = y_base,
-                line_color = 'rgb(18, 49, 135)',
-                mode='lines',
-                name='Your risk without including the effect of Lp(a)',
-                hovertemplate="<br>".join(
-                    ["Age: %{x}",
-                     "Risk: %{y:.1f}%",]
-                    )
-                ))
 
             st.cache()
 
@@ -635,11 +636,12 @@ with risk:
                     font = dict(size = 15),
                     xaxis_title="Age (years)",
                     yaxis_title="Risk (%)",
+                    xaxis_range=[age, 80],
                     yaxis_range=[0, round(max(all_values)) + 0.5],
                     legend = dict(
                      x=0,
                      y=1,
-                     traceorder ='reversed',
+                     #traceorder ='reversed',
                      bgcolor='rgba(255, 255, 255, 0.75)',
                      font_color = 'rgb(18, 49, 135)',
                      ),
@@ -668,8 +670,7 @@ with risk:
         st.subheader('What to do if your Lp(a) level increases your risk of having a heart attack or stroke')
 
         st.write('First, it is important to be aware that the level of Lp(a) in your blood is mostly inherited. If you have high blood levels of Lp(a), then other members of your family may also be at increased risk of heart attack or stroke because of high Lp(a) levels. Indeed, high Lp(a) levels may be the most commonly inherited cause of heart attacks and strokes. So, if your Lp(a) level is elevated, or if your risk of heart attack and stroke is increased by your Lp(a) levels, other members of your family may benefit from measuring their Lp(a) levels to determine if they are at increased risk.')
-        st.write('Unfortunately, Lp(a) levels in the blood cannot be lowered by diet or exercise. In addition, there are no approved medicines that specifically lower Lp(a) levels. However, new very powerful Lp(a) lowering therapies are currently in development.')
-        st.write('Although diet and exercise does not reduce Lp(a) levels, and there are no approved therapies to lower Lp(a), you can still reduce your risk of having a heart attack or stroke despite having high Lp(a) levels.')  
+        st.write('However, you can still reduce your risk of having a heart attack or stroke despite having high Lp(a) levels. Unfortunately, Lp(a) levels in the blood cannot be lowered by diet or exercise. In addition, there are no approved medicines that specifically lower Lp(a) levels. However, new very powerful Lp(a) lowering therapies are currently in development. ')  
         st.write('If your risk of heart attack and stroke is increased by your Lp(a) level, then current clinical practice guidelines recommend that you should more intensely lower other causes of heart attack and stroke, such as your LDL or blood pressure level. Although lowering LDL and blood pressure will not lower your Lp(a) level, it will reduce your overall risk of having a heart attack and stroke.')              
         #st.write('Using the slider bars below, you can estimate how much you need to lower your LDL or blood pressure to reduce your risk of heart attack and stroke by the same amount as the increased risk caused by your Lp(a) levels.') 
         st.write('Using the slider bars below, you can estimate how much you would have to lower your LDL or blood pressure to reduce your risk of heart attack and stroke by the same amount as the increased risk caused by your Lp(a) level. This information can help guide you about how much more intensely you need to lower your LDL and blood pressure level to improve your cardiovascular health despite having high Lp(a) levels.')
@@ -687,9 +688,9 @@ with risk:
             col1, col2 = st.columns(2)
             with col1:
                 if units_LDL == "mmol/L":
-                    ldl_dec = st.slider('How much should I lower my LDL?', 0.0, 1.5, 0.0, step = 0.1)
+                    ldl_dec = st.slider('How much should I lower my LDL?', 0.0, 1.5, 0.0, step = 0.01)
                 else:
-                    LDL_DEC = st.slider('How much should I lower my LDL?', 0.0, 60.0, 0.0, step = 0.1)
+                    LDL_DEC = st.slider('How much should I lower my LDL?', 0.0, 60.0, 0.0, step = 0.01)
                     ldl_dec = LDL_DEC / 38.67
 
             with col2:
@@ -701,7 +702,7 @@ with risk:
             
             riskList_Rx = calculate(age, sex, ldl, ldl_treatment, ldl_dec * -1, age_from_ldl, age_to_ldl,
                                     hdl, SBP, sbp_treatment, sbp_dec * -1, age_from_sbp, age_to_sbp,
-                                    smoke, fmr_tob, diab, BMI, famhx, None)
+                                    smoke, fmr_tob, diab, BMI, famhx, lpa)
 
 
 
@@ -714,19 +715,19 @@ with risk:
             all_values = values + values_lpa + values_Rx
             
 
-
+            
             sbpldl_graph.add_trace(go.Scatter(
-                x = x_Rx,
-                y = y_Rx,
-                line_color = 'rgb(14, 214, 14)',
+                x = x_base,
+                y = y_base,
+                line_color = 'rgb(18, 49, 135)',
                 mode='lines',
-                name='Your risk including the effect of your Lp(a) <br> after lowering your LDL or blood pressure',
+                name='Your risk without including the effect of Lp(a)',
                 hovertemplate="<br>".join(
                     ["Age: %{x}",
                      "Risk: %{y:.1f}%",]
                     )
                 ))
-            
+
             sbpldl_graph.add_trace(go.Scatter(
                 x = x_lpa,
                 y = y_lpa,
@@ -740,16 +741,17 @@ with risk:
                 ))
 
             sbpldl_graph.add_trace(go.Scatter(
-                x = x_base,
-                y = y_base,
-                line_color = 'rgb(18, 49, 135)',
-                mode='lines',
-                name='Your risk without including the effect of Lp(a)',
+                x = x_Rx,
+                y = y_Rx,
+                line_color = 'rgb(214, 14, 14)',
+                mode='markers',
+                name='Your risk including the effect of your Lp(a) <br> after lowering your LDL or blood pressure',
                 hovertemplate="<br>".join(
                     ["Age: %{x}",
                      "Risk: %{y:.1f}%",]
                     )
                 ))
+
 
 
 
@@ -764,11 +766,12 @@ with risk:
                     font = dict(size = 15),
                     xaxis_title="Age (years)",
                     yaxis_title="Risk (%)",
+                    xaxis_range=[age, 80],
                     yaxis_range=[0, round(max(all_values)) + 0.5],
                     legend = dict(
                      x=0,
                      y=1,
-                     traceorder ='reversed',
+                     #traceorder ='reversed',
                      bgcolor='rgba(255, 255, 255, 0.75)',
                      font_color = 'rgb(18, 49, 135)',
                      ),
