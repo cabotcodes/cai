@@ -816,7 +816,7 @@ with risk:
                     st.markdown(f"<h4 style='color:#507796;'>Lowering your SBP by {sbp_dec} mmHg reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is **{round(values_Rx[-1], 1)}%**")
                 if sbp_dec != 0 and ldl_dec != 0:
-                    st.markdown(f"<h4 style='color:#507796;'>Lowering your SBP by {sbp_dec} mmHg and your LDL by {ldl_dec} {units_LDL} reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#507796;'>Lowering your LDL by {ldl_dec} {units_LDL} and your SBP by {sbp_dec} mmHg reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {ldl_dec} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
             else:
                 if sbp_dec == 0 and ldl_dec != 0:
@@ -826,20 +826,22 @@ with risk:
                     st.markdown(f"<h4 style='color:#507796;'>Lowering your SBP by {sbp_dec} mmHg reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is **{round(values_Rx[-1], 1)}%**")
                 if sbp_dec != 0 and ldl_dec != 0:
-                    st.markdown(f"<h4 style='color:#507796;'>Lowering your SBP by {sbp_dec} mmHg and your LDL by {LDL_DEC} {units_LDL} reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#507796;'>Lowering your LDL by {LDL_DEC} {units_LDL} and your SBP by {sbp_dec} mmHg reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {LDL_DEC} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
 
 
-            st.subheader("Reducing your risk of heart attack and stroke")
-            st.write('When the light blue line and the dark blue line overlap, this is the amount you have to reduce your LDL or blood pressure in order to compensate for the increased risk caused by your Lp(a) levels.')
-            st.write('However, lowering LDL and systolic blood pressure does not reduce your Lp(a) levels. As a result, Lp(a) is still circulating in your blood and can damage your arteries. For that reason, the best way to reduce your risk of having a heart attack or stroke caused by Lp(a) is with a medicine that directly lowers Lp(a).')
-            st.write('Potent Lp(a) lowering therapies are currently being developed. Hopefully, these will become available soon and can be used to reduce the risk of heart attack and stroke among persons with high Lp(a) levels.')
 
 # TESTING 2 SLIDERS IN THE SAME LINE
 
 
 # END OF TEST
 with ref:
+        st.subheader("Reducing your risk of heart attack and stroke")
+        st.write('When the light blue line and the dark blue line overlap, this is the amount you have to reduce your LDL or blood pressure in order to compensate for the increased risk caused by your Lp(a) levels.')
+        st.write('However, lowering LDL and systolic blood pressure does not reduce your Lp(a) levels. As a result, Lp(a) is still circulating in your blood and can damage your arteries. For that reason, the best way to reduce your risk of having a heart attack or stroke caused by Lp(a) is with a medicine that directly lowers Lp(a).')
+        st.write('Potent Lp(a) lowering therapies are currently being developed. Hopefully, these will become available soon and can be used to reduce the risk of heart attack and stroke among persons with high Lp(a) levels.')
+
+
         st.write(' ')
         st.subheader('Further information')
         st.caption('For further information about the importance of Lipoprotein(a), with recommendations on what to measure, in whom to measure, how to interpret and what to do, read the EAS Consensus Position Paper:  https://doi.org/10.1093/eurheartj/ehac361')
