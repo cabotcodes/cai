@@ -600,6 +600,18 @@ with risk:
             
 
             lpa_graph.add_trace(go.Scatter(
+                x = x_lpa,
+                y = y_lpa,
+                line_color = 'rgb(214, 14, 14)',
+                mode='lines',
+                name='Your risk including the effect of Lp(a)',
+                hovertemplate="<br>".join(
+                    ["Age: %{x}",
+                     "Risk: %{y:.1f}%",]
+                    )
+                ))
+
+            lpa_graph.add_trace(go.Scatter(
                 x = x_base,
                 y = y_base,
                 line_color = 'rgb(18, 49, 135)',
@@ -611,17 +623,6 @@ with risk:
                     )
                 ))
 
-            lpa_graph.add_trace(go.Scatter(
-                x = x_lpa,
-                y = y_lpa,
-                line_color = 'rgb(214, 14, 14)',
-                mode='lines',
-                name='Your risk including the effect of Lp(a)',
-                hovertemplate="<br>".join(
-                    ["Age: %{x}",
-                     "Risk: %{y:.1f}%",]
-                    )
-                ))
 
 
             st.cache()
@@ -641,7 +642,7 @@ with risk:
                     legend = dict(
                      x=0,
                      y=1,
-                     #traceorder ='reversed',
+                     traceorder ='reversed',
                      bgcolor='rgba(255, 255, 255, 0.75)',
                      font_color = 'rgb(18, 49, 135)',
                      ),
@@ -717,16 +718,17 @@ with risk:
 
             
             sbpldl_graph.add_trace(go.Scatter(
-                x = x_base,
-                y = y_base,
-                line_color = 'rgb(18, 49, 135)',
+                x = x_Rx,
+                y = y_Rx,
+                line_color = 'rgb(159, 190, 214)',
                 mode='lines',
-                name='Your risk without including the effect of Lp(a)',
+                name='Your risk including the effect of your Lp(a) <br> after lowering your LDL or blood pressure',
                 hovertemplate="<br>".join(
                     ["Age: %{x}",
                      "Risk: %{y:.1f}%",]
                     )
                 ))
+
 
             sbpldl_graph.add_trace(go.Scatter(
                 x = x_lpa,
@@ -741,11 +743,11 @@ with risk:
                 ))
 
             sbpldl_graph.add_trace(go.Scatter(
-                x = x_Rx,
-                y = y_Rx,
-                line_color = 'rgb(214, 14, 14)',
-                mode='markers',
-                name='Your risk including the effect of your Lp(a) <br> after lowering your LDL or blood pressure',
+                x = x_base,
+                y = y_base,
+                line_color = 'rgb(18, 49, 135)',
+                mode='lines',
+                name='Your risk without including the effect of Lp(a)',
                 hovertemplate="<br>".join(
                     ["Age: %{x}",
                      "Risk: %{y:.1f}%",]
@@ -771,7 +773,7 @@ with risk:
                     legend = dict(
                      x=0,
                      y=1,
-                     #traceorder ='reversed',
+                     traceorder ='reversed',
                      bgcolor='rgba(255, 255, 255, 0.75)',
                      font_color = 'rgb(18, 49, 135)',
                      ),
