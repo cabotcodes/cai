@@ -366,33 +366,37 @@ with inputs:
         sex = st.selectbox("Sex", ('', 'Male', 'Female'))
         if sex != '':
             sex = int(sex == 'Male')
+        else:
+            sex = 1
 
-        age = st.number_input('Age (years) (ages 30-80)', step = 1)
-
+        age = st.number_input('Age (years) (ages 30-80)', value = 30, step = 1)
+        if age < 30 or age > 80:
+            st.error("Please enter a number in the correct range.")
+        
         st.write('Cholesterol')
         if units_LDL == "mmol/L":            
-            TC = st.number_input('Total Cholesterol (mmol/L) (range 3.5 - 8.0)', step = 0.1)
+            TC = st.number_input('Total Cholesterol (mmol/L) (range 3.5 - 8.0)', value = [5.9, 5.5][sex], step = 0.1)
             if TC != 0.0 and TC < 3.5 or TC > 8.0:
                 st.error("Please enter a number in the correct range.")
 
-            LDL = st.number_input('LDL Cholesterol (mmol/L) (range 2.0 - 5.0)', step = 0.1)
+            LDL = st.number_input('LDL Cholesterol (mmol/L) (range 2.0 - 5.0)', value = [3.5, 3.5][sex], step = 0.1)
             if LDL != 0.0 and LDL < 2.0 or LDL > 5.0:
                 st.error("Please enter a number in the correct range.")
 
-            HDL = st.number_input('HDL Cholesterol (mmol/L) (range 0.6 - 2.8)', step = 0.1)
+            HDL = st.number_input('HDL Cholesterol (mmol/L) (range 0.6 - 2.8)', value = [1.6, 1.2][sex], step = 0.1)
             if HDL != 0.0 and HDL < 0.6 or HDL > 2.8:
                 st.error("Please enter a number in the correct range.")
 
         else:
-            TC = st.number_input('Total Cholesterol (mg/dL) (range 135 - 300)', step = 0.1)
+            TC = st.number_input('Total Cholesterol (mg/dL) (range 135 - 300)', value = [228.2, 212.7][sex], step = 0.1)
             if TC != 0.0 and TC < 135 or TC > 300:
                 st.error("Please enter a number in the correct range.")
 
-            LDL = st.number_input('LDL Cholesterol (mg/dL) (range 80 - 200)', step = 0.1)
+            LDL = st.number_input('LDL Cholesterol (mg/dL) (range 80 - 200)', value = [135.0, 135.0][sex], step = 0.1)
             if LDL != 0.0 and LDL < 80 or LDL > 200:
                 st.error("Please enter a number in the correct range.")
 
-            HDL = st.number_input('HDL Cholesterol (mg/dL) (range 25 - 100)', step = 0.1)
+            HDL = st.number_input('HDL Cholesterol (mg/dL) (range 25 - 100)', value = [61.9, 46.4][sex], step = 0.1)
             if HDL != 0.0 and HDL < 25 or HDL > 100:
                 st.error("Please enter a number in the correct range.")
 
@@ -405,8 +409,14 @@ with inputs:
         #else:
         #    st.write('Non-HDL Cholesterol:')
         #apoB = st.number_input('apoB (mg/dL)', value = [106.1, 107.6][sex], step = 0.1)
+
+        SBP = st.number_input('Systolic Blood Pressure (mmHg) (range 90 - 200)', value = [135, 135][sex])
+        if SBP != 0.0 and SBP < 90 or SBP > 200:
+            st.error("Please enter a number in the correct range.")
         
-        SBP = st.number_input('Systolic Blood Pressure (mmHg) (range 90-200)', step = 0.1)
+##        SBP = st.number_input('Systolic Blood Pressure (mmHg) (range 90 - 200)', value = [135, 135][sex], step = 0.1)
+##        if SBP != 0.0 and SBP < 90 or SBP > 200:
+##            st.error("Please enter a number in the correct range.")
         
         trtbp = st.selectbox("Are you taking a medicine to lower blood pressure?", ('', 'No', 'Yes'))
 
@@ -414,14 +424,14 @@ with inputs:
         #st.write('BMI (kg/m²)')
 
         if units_height == "cm":
-            height = st.number_input('Height (cm)')
+            height = st.number_input('Height (cm)', value = [163.0, 176.0][sex], step = 0.1)
         else:
-            height = st.number_input('Height (in)')
+            height = st.number_input('Height (in)', value = [64.2, 69.3][sex], step = 0.1)
         
         if units_weight == "kg":
-            weight = st.number_input('Weight (kg)')
+            weight = st.number_input('Weight (kg)', value = [71.0, 85.0][sex], step = 0.1)
         else:
-            weight = st.number_input('Weight (lbs)')
+            weight = st.number_input('Weight (lbs)', value = [156.2, 187.0][sex], step = 0.1)
 
         st.write('Your BMI is calculated as: ')
         
@@ -805,4 +815,11 @@ with risk:
 with ref:
         st.write(' ')
         st.subheader('Further information')
-        st.write('References')
+        st.caption('For further information about the importance of Lipoprotein(a), with recommendations on what to measure, in whom to measure, how to interpret and what to do, read the EAS Consensus Position Paper:  https://doi.org/10.1093/eurheartj/ehac361')
+        st.caption('Additional information about how to reduce your risk of having a heart attack or stroke is provided in the 2019 ESC/EAS Clinical Practice Guidelines and in the EAS Expert Consensus Statement on LDL listed below.')
+        st.caption('1. Lipoprotein(a) in atherosclerotic cardiovascular disease and aortic stenosis: a European Atherosclerosis Society consensus statement,'
+                   'European Heart Journal, 2022.')
+        st.caption('2. 2019 ESC/EAS Guidelines for the management of dyslipidaemias: lipid modification to reduce cardiovascular risk. Eur Heart J. 2020 Jan 1;41(1):111-188. doi: 10.1093/eurheartj/ehz455.')
+        st.caption('3. Low-density lipoproteins cause atherosclerotic cardiovascular disease. 1. Evidence from genetic, epidemiologic, and clinical studies. A consensus statement from the European Atherosclerosis Society Consensus Panel. Eur Heart J. 2017 21;38(32):2459-2472. doi: 10.1093/eurheartj/ehx144.')
+
+
