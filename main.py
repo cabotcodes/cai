@@ -692,7 +692,7 @@ with risk:
         if SBP > 0.0 and LDL > 0.0 and age > 0 and sex != '' and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height > 0 and weight > 0:
             sbpldl_chart_placeholder = st.empty()
             st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(lpa, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 is now: {round(values_lpa[-1], 1)}%<h4>", unsafe_allow_html=True)
-            st.write('You can use the slider bars below to estimate how much you can reduce your risk of having a heart attack or stroke by lowering your LDL and blood pressure levels. Using the slider bars, you can estimate how much you would need to lower your LDL or blood pressure to reduce your risk by the same amount as your Lp(a) level is increasing your risk of having a heart attack or stroke. After using the slider bars, a new line will appear on the graph showing you your risk of having a heart attack or stroke that includes both your Lp(a) level and the effect of lowering your LDL or blood pressure.')
+            st.write('You can use the slider bars below to estimate how much you can reduce your risk of having a heart attack or stroke by lowering your LDL and blood pressure levels. After using the slider bars, a new line will appear on the graph showing you your risk of having a heart attack or stroke that includes both your Lp(a) level and the effect of lowering your LDL or blood pressure.')
 
             col1, col2 = st.columns(2)
             with col1:
@@ -705,6 +705,14 @@ with risk:
             with col2:
                 #st.write('How much should I lower my blood pressure?')
                 sbp_dec = st.slider('How much should I lower my blood pressure?', 0, 15, 0, step = 1)
+
+
+            st.subheader("Reducing your risk of heart attack and stroke")
+            st.write('When the light blue line and the dark blue line overlap, this is the amount you have to reduce your LDL or blood pressure in order to compensate for the increased risk caused by your Lp(a) levels.')
+            st.write('However, lowering LDL and systolic blood pressure does not reduce your Lp(a) levels. As a result, Lp(a) is still circulating in your blood and can damage your arteries. For that reason, the best way to reduce your risk of having a heart attack or stroke caused by Lp(a) is with a medicine that directly lowers Lp(a).')
+            st.write('Potent Lp(a) lowering therapies are currently being developed. hopefully, these will become available soon and can be used to reduce the risk of heart attack and stroke among persons with high Lp(a) levels.')
+
+
 
             ldl_treatment = 1 if ldl_dec != 0 else 0
             sbp_treatment = 1 if sbp_dec != 0 else 0
@@ -825,6 +833,7 @@ with risk:
 
            
 # TESTING 2 SLIDERS IN THE SAME LINE
+
 
 # END OF TEST
 with ref:
