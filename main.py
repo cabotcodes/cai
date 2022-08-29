@@ -63,16 +63,14 @@ def calculate(age, sex, ldl, ldl_rx, ldl_dec, age_start_rx_ldl, age_stop_rx_ldl,
     del_SBP = sbp - mean_SBP_list[sex][age-30]
     
     a_beta = [
-        #[1, 1,
-        [0.66, 0.6,
+        [0.66 * 0.85, 0.5,
         [0.983679437374588, 0.768813402297644],
         [0.467034851783647, 0.417294201034895],
         0.800648203696211, 0.502003018790893,
         0.00895775920895248, -0.632265086010107,
         0.00305563, 0],
 
-        #[1, 1,
-        [0.66, 0.6,
+        [0.66 * 0.85, 0.5,
         [0.641703348526382, 0.4042777367951],
         [0.396454635449883, 0.351011034242294],
         0.690752315157672, 0.555861893739954,
@@ -121,13 +119,13 @@ def calculate(age, sex, ldl, ldl_rx, ldl_dec, age_start_rx_ldl, age_stop_rx_ldl,
                     ]),
 
 
-                #del_LDL*a_beta[sex][0]*(i_a-20)*LDL_ES_mmol[sex],
+
                 (LDL_ES_mmol[sex] * sum([del_LDL*a_beta[sex][0]*(i_a-20),
                                          (((i_a) - age_start_rx_ldl)+1) * ldl_dec if (((i_a) - age_start_rx_ldl >= 0) and (age_stop_rx_ldl - (i_a) >= 0) and ldl_rx == 1) else past_a_sums[-1][2]]
                                        )) + (-0.12 if (ldl_rx == 1 and ((i_a) >= age_start_rx_ldl))  else 0),
 
 
-                #del_SBP*a_beta[sex][1]*(i_a-20)*SBP_ES_mmol[sex],
+
                 (SBP_ES_mmol[sex] * sum([del_SBP*a_beta[sex][1]*(i_a-20),
                                          (((i_a) - age_start_rx_sbp)+1) * sbp_dec if (((i_a) - age_start_rx_sbp >= 0) and (age_stop_rx_sbp - (i_a) >= 0) and sbp_rx == 1) else past_a_sums[-1][6]]
                                        )) + (-0.1 if (sbp_rx == 1 and ((i_a) >= age_start_rx_sbp)) else 0),
@@ -143,7 +141,7 @@ def calculate(age, sex, ldl, ldl_rx, ldl_dec, age_start_rx_ldl, age_stop_rx_ldl,
                 (Lp_a - [20.66, 16.6][sex]) * a_beta[sex][8]
 
             ]
-        #print(f"a_sums: {a_sums}")
+
         past_a_sums.append(a_sums)
 
         b_sums = [
@@ -159,7 +157,7 @@ def calculate(age, sex, ldl, ldl_rx, ldl_dec, age_start_rx_ldl, age_stop_rx_ldl,
                 (hdl - avg_hdl[sex]) * b_beta[sex][7]
 
             ]
-        #print(f"b_sums: {b_sums}")
+
 
         lnRR_a_list.append(sum(a_sums[8:]))
         lnRR_b_list.append(sum(b_sums))
@@ -169,16 +167,17 @@ def calculate(age, sex, ldl, ldl_rx, ldl_dec, age_start_rx_ldl, age_stop_rx_ldl,
         lnRR_b[i] = lnRR_b_list[i]
 
         
-        #if i < age - 30:
-        #    a_t[i] = 0
-        #    b_t[i] = 0
-        #    c_t[i] = 0
-        #    d_t[i] = 0
-        #    e_t[i] = 0
-        #    f_t[i] = 0
-        #    m_t[i] = 0
+        if i < age - 30:
+            a_t[i] = 0
+            b_t[i] = 0
+            c_t[i] = 0
+            d_t[i] = 0
+            e_t[i] = 0
+            f_t[i] = 0
+            m_t[i] = 0
 
-        if i == 0: #age - 30:
+        if i == age - 30:
+
             a_t[i] = 1 - (Ha_list[sex][i] ** math.exp(lnRR_a[i]))
             b_t[i] = 1 - (Hb_list[sex][i] ** math.exp(lnRR_b[i]))
             c_t[i] = b_t[i]
@@ -197,7 +196,7 @@ def calculate(age, sex, ldl, ldl_rx, ldl_dec, age_start_rx_ldl, age_stop_rx_ldl,
             e_t[i] = e_t[i-1] - c_t[i] - d_t[i]
             f_t[i] = f_t[i-1] + d_t[i]
             m_t[i] = m_t[i-1] + c_t[i]
-        #print(f"{i}, age: {age}, Ha: {Ha_list[sex][i]}, Hb: {Hb_list[sex][i]}, lnRR_a: {round(lnRR_a[i], 6)}, lnRR_b: {round(lnRR_b[i], 6)}, a_t: {round(a_t[i], 6)}, b_t: {round(b_t[i], 6)}, c_t: {round(c_t[i], 6)}, d_t: {round(d_t[i], 6)}, e_t: {round(e_t[i], 6)}, f_t: {round(f_t[i], 6)}, m_t: {round(m_t[i], 6)}")
+
 
     f_t.insert(0, 0)
     return [f_t, 30 + sum(e_t)]
@@ -458,10 +457,10 @@ with inputs:
         st.session_state.pressed = True
 
 
-    age_from_ldl = 30
+    age_from_ldl = age
     age_to_ldl = 80
 
-    age_from_sbp = 30
+    age_from_sbp = age
     age_to_sbp = 80
 
 config = {'displayModeBar': False}#, 'staticPlot': True}
@@ -490,9 +489,10 @@ with risk:
 
 
             riskList = riskList[0]
-            values = [num * 100 for num in riskList][1:][age-30:]
+            values = [num * 100 for num in riskList][:-1][age-30:]
             ageList = [a for a in range(30, 81)][age-30:]
 
+            #print(riskList)
 
             x_base = ageList
             y_base = values
@@ -561,10 +561,6 @@ with risk:
 
         ####################################################################################
 
-            print('\n\n\nbefore:', ', '.join([str(s) for s in [age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
-                  hdl, SBP, 0, 0, age_from_sbp, age_to_sbp,
-                  smoke, fmr_tob, diab, BMI, famhx, '']]))
-
             st.markdown(f"<h4 style='color:#507796;'>Your risk of having a heart attack or stroke up to age 80 is estimated to be: {round(values[-1], 1)}% <h4>", unsafe_allow_html=True)
             st.write('This estimated risk does not take into account the Lp(a) levels in your blood. To see how much your Lp(a) level increases your risk of having a heart attack or stroke, you can enter your Lp(a) level using the slider bar below. A new line will appear on the graph showing you how much your Lp(a) level increases your risk of having a heart attack or stroke.')
             units_lpa = st.radio("Lp(a) units:", ["nmol/L", "mg/dL"], horizontal = True)
@@ -583,8 +579,9 @@ with risk:
                                      smoke, fmr_tob, diab, BMI, famhx, lpa)
 
             riskList_lpa = riskList_lpa[0]
-            values_lpa = [num * 100 for num in riskList_lpa][1:][age-30:]
-            print(values_lpa[-1])
+            values_lpa = [num * 100 for num in riskList_lpa][:-1][age-30:]
+
+            #print(riskList_lpa)
 
             x_lpa = ageList
             y_lpa = values_lpa
@@ -658,7 +655,7 @@ with risk:
 
         st.write(' ')
         st.subheader('What to do if your Lp(a) level increases your risk of having a heart attack or stroke')
-        #st.write('At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.')
+
         st.write('First, it is important to be aware that the level of Lp(a) in your blood is mostly inherited. If you have high blood levels of Lp(a), then other members of your family may also be at increased risk of heart attack or stroke because of high Lp(a) levels. Indeed, high Lp(a) levels may be the most commonly inherited cause of heart attacks and strokes. So, if your Lp(a) level is elevated, or if your risk of heart attack and stroke is increased by your Lp(a) levels, other members of your family may benefit from measuring their Lp(a) levels to determine if they are at increased risk.')
         st.write('Unfortunately, Lp(a) levels in the blood cannot be lowered by diet or exercise. In addition, there are no approved medicines that specifically lower Lp(a) levels. However, new very powerful Lp(a) lowering therapies are currently in development.')
         st.write('Although diet and exercise does not reduce Lp(a) levels, and there are no approved therapies to lower Lp(a), you can still reduce your risk of having a heart attack or stroke despite having high Lp(a) levels.')  
@@ -698,7 +695,7 @@ with risk:
 
 
             riskList_Rx = riskList_Rx[0]
-            values_Rx = [num * 100 for num in riskList_Rx][1:]
+            values_Rx = [num * 100 for num in riskList_Rx][:-1][age-30:]
 
             x_Rx = ageList
             y_Rx = values_Rx
