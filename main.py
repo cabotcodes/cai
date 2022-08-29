@@ -571,7 +571,7 @@ with risk:
 
         ####################################################################################
 
-            st.markdown(f"<h4 style='color:#507796;'>Your risk of having a heart attack or stroke up to age 80 is estimated to be: {round(values[-1], 1)}% <h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='color:#507796;'>Your risk of having a heart attack or stroke up to age 80 is: {round(values[-1], 1)}% <h4>", unsafe_allow_html=True)
             st.write('This estimated risk does not take into account the Lp(a) levels in your blood. To see how much your Lp(a) level increases your risk of having a heart attack or stroke, you can enter your Lp(a) level using the slider bar below. A new line will appear on the graph showing you how much your Lp(a) level increases your risk of having a heart attack or stroke.')
             units_lpa = st.radio("Lp(a) units:", ["nmol/L", "mg/dL"], horizontal = True)
             if units_lpa == "nmol/L":
@@ -600,6 +600,18 @@ with risk:
             
 
             lpa_graph.add_trace(go.Scatter(
+                x = x_lpa,
+                y = y_lpa,
+                line_color = 'rgb(214, 14, 14)',
+                mode='lines',
+                name='Your risk including the effect of Lp(a)',
+                hovertemplate="<br>".join(
+                    ["Age: %{x}",
+                     "Risk: %{y:.1f}%",]
+                    )
+                ))
+
+            lpa_graph.add_trace(go.Scatter(
                 x = x_base,
                 y = y_base,
                 line_color = 'rgb(18, 49, 135)',
@@ -611,17 +623,6 @@ with risk:
                     )
                 ))
 
-            lpa_graph.add_trace(go.Scatter(
-                x = x_lpa,
-                y = y_lpa,
-                line_color = 'rgb(214, 14, 14)',
-                mode='lines',
-                name='Your risk including the effect of Lp(a)',
-                hovertemplate="<br>".join(
-                    ["Age: %{x}",
-                     "Risk: %{y:.1f}%",]
-                    )
-                ))
             st.cache()
 
             lpa_graph.update_layout(
@@ -686,7 +687,7 @@ with risk:
             col1, col2 = st.columns(2)
             with col1:
                 if units_LDL == "mmol/L":
-                    ldl_dec = st.slider('How much should I lower my LDL?', 0.0, 1.5, 0.0, step = 0.5)
+                    ldl_dec = st.slider('How much should I lower my LDL?', 0.0, 1.5, 0.0, step = 0.1)
                 else:
                     LDL_DEC = st.slider('How much should I lower my LDL?', 0.0, 60.0, 0.0, step = 0.1)
                     ldl_dec = LDL_DEC / 38.67
@@ -719,13 +720,25 @@ with risk:
                 y = y_Rx,
                 line_color = 'rgb(14, 214, 14)',
                 mode='lines',
-                name='Your risk including the effect of your Lp(a) after lowering your LDL or blood pressure',
+                name='Your risk including the effect of your Lp(a) <br> after lowering your LDL or blood pressure',
                 hovertemplate="<br>".join(
                     ["Age: %{x}",
                      "Risk: %{y:.1f}%",]
                     )
                 ))
             
+            sbpldl_graph.add_trace(go.Scatter(
+                x = x_lpa,
+                y = y_lpa,
+                line_color = 'rgb(214, 14, 14)',
+                mode='lines',
+                name='Your risk including the effect of Lp(a)',
+                hovertemplate="<br>".join(
+                    ["Age: %{x}",
+                     "Risk: %{y:.1f}%",]
+                    )
+                ))
+
             sbpldl_graph.add_trace(go.Scatter(
                 x = x_base,
                 y = y_base,
@@ -738,17 +751,6 @@ with risk:
                     )
                 ))
 
-            sbpldl_graph.add_trace(go.Scatter(
-                x = x_lpa,
-                y = y_lpa,
-                line_color = 'rgb(214, 14, 14)',
-                mode='lines',
-                name='Your risk including the effect of Lp(a)',
-                hovertemplate="<br>".join(
-                    ["Age: %{x}",
-                     "Risk: %{y:.1f}%",]
-                    )
-                ))
 
 
             st.cache()
