@@ -474,7 +474,7 @@ with risk:
         st.write(' ')
         #st.write('** Your risk of having a heart attack, stroke or coronary revascularization procedure')
         lpa_chart_placeholder = st.empty()
-        if SBP > 0.0 and LDL > 0.0:
+        if SBP > 0.0 and LDL > 0.0 and age > 0 and sex != '' and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height > 0 and weight > 0:
 
             if units_LDL == "mmol/L":
                 ldl = LDL
@@ -490,8 +490,8 @@ with risk:
 
 
             riskList = riskList[0]
-            values = [num * 100 for num in riskList][1:]
-            ageList = [a for a in range(30, 81)]
+            values = [num * 100 for num in riskList][1:][age-30:]
+            ageList = [a for a in range(30, 81)][age-30:]
 
 
             x_base = ageList
@@ -583,7 +583,7 @@ with risk:
                                      smoke, fmr_tob, diab, BMI, famhx, lpa)
 
             riskList_lpa = riskList_lpa[0]
-            values_lpa = [num * 100 for num in riskList_lpa][1:]
+            values_lpa = [num * 100 for num in riskList_lpa][1:][age-30:]
             print(values_lpa[-1])
 
             x_lpa = ageList
@@ -662,7 +662,7 @@ with risk:
         st.write('First, it is important to be aware that the level of Lp(a) in your blood is mostly inherited. If you have high blood levels of Lp(a), then other members of your family may also be at increased risk of heart attack or stroke because of high Lp(a) levels. Indeed, high Lp(a) levels may be the most commonly inherited cause of heart attacks and strokes. So, if your Lp(a) level is elevated, or if your risk of heart attack and stroke is increased by your Lp(a) levels, other members of your family may benefit from measuring their Lp(a) levels to determine if they are at increased risk.')
         st.write('Unfortunately, Lp(a) levels in the blood cannot be lowered by diet or exercise. In addition, there are no approved medicines that specifically lower Lp(a) levels. However, new very powerful Lp(a) lowering therapies are currently in development.')
         st.write('Although diet and exercise does not reduce Lp(a) levels, and there are no approved therapies to lower Lp(a), you can still reduce your risk of having a heart attack or stroke despite having high Lp(a) levels.')  
-        st.write('If your risk of heart attack and stroke is increased by your Lp(a) level, then current clinical practise guidelines recommend that you should more intensely lower other causes of heart attack and stroke, such as your LDL or blood pressure level. Although lowering LDL and blood pressure will not lower your Lp(a) level, it will reduce your overall risk of having a heart attack and stroke.')              
+        st.write('If your risk of heart attack and stroke is increased by your Lp(a) level, then current clinical practice guidelines recommend that you should more intensely lower other causes of heart attack and stroke, such as your LDL or blood pressure level. Although lowering LDL and blood pressure will not lower your Lp(a) level, it will reduce your overall risk of having a heart attack and stroke.')              
         #st.write('Using the slider bars below, you can estimate how much you need to lower your LDL or blood pressure to reduce your risk of heart attack and stroke by the same amount as the increased risk caused by your Lp(a) levels.') 
         st.write('Using the slider bars below, you can estimate how much you would have to lower your LDL or blood pressure to reduce your risk of heart attack and stroke by the same amount as the increased risk caused by your Lp(a) level. This information can help guide you about how much more intensely you need to lower your LDL and blood pressure level to improve your cardiovascular health despite having high Lp(a) levels.')
 
@@ -671,10 +671,10 @@ with risk:
 
     ####################################################################################
 
-        sbpldl_chart_placeholder = st.empty()
-        st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(lpa, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 is now: {round(values_lpa[-1], 1)}%<h4>", unsafe_allow_html=True)
-        st.write('You can use the slider bars below to estimate how much you can reduce your risk of having a heart attack or stroke by lowering your LDL and blood pressure levels. Using the slider bars, you can estimate how much you would need to lower your LDL or blood pressure to reduce your risk by the same amount as your Lp(a) level is increasing your risk of having a heart attack or stroke. After using the slider bars, a new line will appear on the graph showing you your risk of having a heart attack or stroke that includes both your Lp(a) level and the effect of lowering your LDL or blood pressure.')
-        if SBP > 0.0 and LDL > 0.0:
+        if SBP > 0.0 and LDL > 0.0 and age > 0 and sex != '' and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height > 0 and weight > 0:
+            sbpldl_chart_placeholder = st.empty()
+            st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(lpa, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 is now: {round(values_lpa[-1], 1)}%<h4>", unsafe_allow_html=True)
+            st.write('You can use the slider bars below to estimate how much you can reduce your risk of having a heart attack or stroke by lowering your LDL and blood pressure levels. Using the slider bars, you can estimate how much you would need to lower your LDL or blood pressure to reduce your risk by the same amount as your Lp(a) level is increasing your risk of having a heart attack or stroke. After using the slider bars, a new line will appear on the graph showing you your risk of having a heart attack or stroke that includes both your Lp(a) level and the effect of lowering your LDL or blood pressure.')
 
             col1, col2 = st.columns(2)
             with col1:
