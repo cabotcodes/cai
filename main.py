@@ -707,10 +707,7 @@ with risk:
                 sbp_dec = st.slider('How much should I lower my blood pressure?', 0, 15, 0, step = 1)
 
 
-            st.subheader("Reducing your risk of heart attack and stroke")
-            st.write('When the light blue line and the dark blue line overlap, this is the amount you have to reduce your LDL or blood pressure in order to compensate for the increased risk caused by your Lp(a) levels.')
-            st.write('However, lowering LDL and systolic blood pressure does not reduce your Lp(a) levels. As a result, Lp(a) is still circulating in your blood and can damage your arteries. For that reason, the best way to reduce your risk of having a heart attack or stroke caused by Lp(a) is with a medicine that directly lowers Lp(a).')
-            st.write('Potent Lp(a) lowering therapies are currently being developed. hopefully, these will become available soon and can be used to reduce the risk of heart attack and stroke among persons with high Lp(a) levels.')
+        
 
 
 
@@ -809,6 +806,7 @@ with risk:
             #    st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
             #    #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is **{round(values_lpa[-1], 1)}%**")
 
+        
 
             if units_LDL == "mmol/L":
                 if sbp_dec == 0 and ldl_dec != 0:
@@ -831,7 +829,12 @@ with risk:
                     st.markdown(f"<h4 style='color:#507796;'>Lowering your SBP by {sbp_dec} mmHg and your LDL by {LDL_DEC} {units_LDL} reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {LDL_DEC} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
 
-           
+
+            st.subheader("Reducing your risk of heart attack and stroke")
+            st.write('When the light blue line and the dark blue line overlap, this is the amount you have to reduce your LDL or blood pressure in order to compensate for the increased risk caused by your Lp(a) levels.')
+            st.write('However, lowering LDL and systolic blood pressure does not reduce your Lp(a) levels. As a result, Lp(a) is still circulating in your blood and can damage your arteries. For that reason, the best way to reduce your risk of having a heart attack or stroke caused by Lp(a) is with a medicine that directly lowers Lp(a).')
+            st.write('Potent Lp(a) lowering therapies are currently being developed. Hopefully, these will become available soon and can be used to reduce the risk of heart attack and stroke among persons with high Lp(a) levels.')
+
 # TESTING 2 SLIDERS IN THE SAME LINE
 
 
