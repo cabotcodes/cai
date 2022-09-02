@@ -231,7 +231,7 @@ hide_st_style = """
 	
             }
             footer:after {
-                content:'Copyright © TBFerence & CKFerence 2022'; 
+                content:'Copyright © TBFerence & CKFerence 2022. All rights reserved.'; 
                 visibility: visible;
                 display: block;
                 position: relative;
@@ -832,7 +832,7 @@ with ref:
         st.subheader("Reducing your risk of heart attack and stroke")
         st.write('When the light blue line and the dark blue line overlap, this is the amount you have to reduce your LDL or blood pressure in order to compensate for the increased risk caused by your Lp(a) levels.')
         st.write('Because lowering LDL and systolic blood pressure does not reduce your Lp(a) levels, Lp(a) is still circulating in your blood and can damage your arteries. For that reason, the best way to reduce your risk of having a heart attack or stroke caused by Lp(a) is with a medicine that directly lowers Lp(a).')
-        st.write('Potent Lp(a) lowering therapies are currently being developed. Hopefully, these will become available soon and can be used to directly reduce the risk of heart attack and stroke among persons with high Lp(a) levels.')
+        st.write('Potent Lp(a) lowering therapies are currently being developed. Hopefully, these new therapies will become available soon and can be used to directly reduce the risk of heart attack and stroke among persons with high Lp(a) levels.')
 
 
         st.write(' ')
