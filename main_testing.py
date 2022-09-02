@@ -592,7 +592,7 @@ with risk:
                 st.markdown(f"<h2 style='color:#800020;'>{round(values[-1], 1)}%<h2>", unsafe_allow_html=True)
 
 
-            st.markdown(f"<h4 style='color:#507796;'>Your risk of having a heart attack or stroke up to age 80 is: {round(values[-1], 1)}% <h4>", unsafe_allow_html=True)
+            #st.markdown(f"<h4 style='color:#507796;'>Your risk of having a heart attack or stroke up to age 80 is: {round(values[-1], 1)}% <h4>", unsafe_allow_html=True)
             st.write('This estimated risk does not take into account the Lp(a) levels in your blood. To see how much your Lp(a) level increases your risk of having a heart attack or stroke, you can enter your Lp(a) level using the slider bar below. A new line will appear on the graph showing you how much your Lp(a) level increases your risk of having a heart attack or stroke.')
             units_lpa = st.radio("Lp(a) units:", ["nmol/L", "mg/dL"], horizontal = True)
             if units_lpa == "nmol/L":
@@ -674,8 +674,12 @@ with risk:
             lpa_chart_placeholder.plotly_chart(lpa_graph, config = config)
 
             if units_lpa == "nmol/L":
-                st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(lpa, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 is now: {round(values_lpa[-1], 1)}%. <h4>", unsafe_allow_html=True)
-                #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(lpa, 2)} {units_lpa} is **{round(values_lpa[-1], 1)}%**")
+                st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(lpa, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 increases from {round(values[-1], 1)}% to:<h4>", unsafe_allow_html=True)
+                col1, col2 = st.columns([6,8])
+                with col1:
+                    st.write(' ')
+                with col2:
+                    st.markdown(f"<h2 style='color:#800020;'>{round(values_lpa[-1], 1)}%<h2>", unsafe_allow_html=True)
             else:
                 st.markdown(f"<h4 style='color:#507796;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
                 #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is **{round(values_lpa[-1], 1)}%**")

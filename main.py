@@ -837,7 +837,7 @@ with ref:
 
         st.write(' ')
         st.subheader('Further information')
-        st.caption('For further information about the importance of Lipoprotein(a), with recommendations on what to measure, in whom to measure, how to interpret and what to do, read the EAS Consensus Position Paper:  https://doi.org/10.1093/eurheartj/ehac361')
+        st.caption('For the latest practical and scientific information about Lp(a), please read the new updated 2022 European Atherosclerosis Society (EAS) International Expert Consensus Statement on Lp(a), which can be found here: https://doi.org/10.1093/eurheartj/ehac361')
         st.caption('Additional information about how to reduce your risk of having a heart attack or stroke is provided in the 2019 ESC/EAS Clinical Practice Guidelines and in the EAS Expert Consensus Statement on LDL listed below.')
         st.caption('1. Lipoprotein(a) in atherosclerotic cardiovascular disease and aortic stenosis: a European Atherosclerosis Society consensus statement,'
                    'European Heart Journal, 2022.')
@@ -846,7 +846,7 @@ with ref:
         st.write(' ')
 
         st.subheader("About Causal AI")
-        st.caption('Causal AI is the next generation of artifical intelligence (AI) that embeds causal reasoning and causal effects into an ensemble of AI algorithms. Adding causal effects permits AI to go beyond simple prediction to prescribe specific actions to change an outcome.')
+        st.caption('Causal AI is the next generation of artifical intelligence (AI) that embeds causal reasoning and causal effects into an ensemble of AI algorithms. Adding causal effects enables AI to go beyond simple prediction to prescribe specific actions that can change outcomes.')
         st.caption('This AI application embeds the causal effects of Lp(a), LDL, and SBP on the risk of having a heart attack or stroke. Including causal effects in discrete time-units of exposure to reflect the biology of how atherosclerosis develops permits an accurate prediction of the risk caused by your Lp(a), LDL, and SBP levels - in the context of all your other risk factors - and an accurate estimate of the benefit you can achieve by lowering your Lp(a), LDL, and SBP beginning at any age and extending for any duration. This information can then be used to prescribe specific actions to personalize the prevention of cardiovascular disease and introduce the era of precision cardiovascular health.')
         st.caption('Further information can be found at:')
         st.caption('   Causal AI substantially improves the validity of estimating cardiovascular risk and benefit. Ference TB, Sniderman AD, Deanfield JD, Catapano AL, and Ference BA, Presented as a HOTLINE Late Breaking Clinical Trial at the 2022 European Society of Cardiology Annual Scientific Congress in Barcelona on 28 August 2022')
