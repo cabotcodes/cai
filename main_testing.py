@@ -5,7 +5,6 @@ import plotly.graph_objects as go
 import matplotlib
 import math
 import copy
-from streamlit_metrics import metric, metric_row
 ############################## Data ##############################
 men_mean_LDL = [3.3174731188868307, 3.334143838077217, 3.350898329725846, 3.3677370147998453, 3.3846603163817544, 3.4016686596801553, 3.4187624720403567, 3.435942182955132, 3.45320822407551, 3.4705610292216185, 3.4880010343935868, 3.4955003878975948, 3.54100077579519, 3.555500387897595, 3.611998965606413, 3.655001292991983, 3.6629997414016033, 3.6299999999999994, 3.6829997414016034, 3.6814998707008013, 3.695500387897595, 3.68899922420481, 3.700499094905611, 3.724998707008017, 3.7459994828032066, 3.7070002585983968, 3.7089992242048098, 3.714000517196793, 3.721499870700802, 3.714000517196793, 3.718500129299198, 3.69899922420481, 3.6940005171967933, 3.6870002585983968, 3.6940005171967933, 3.6570002585983965, 3.6470002585983967, 3.6449987070080163, 3.631998965606413, 3.613838970778381, 3.595769775924489, 3.5777909270448665, 3.559901972409642, 3.542102462547594, 3.524391950234856, 3.506769990483682, 3.4892361405312635, 3.471789959828607, 3.454431010029464, 3.437158854979317, 3.41997306070442]
 women_mean_LDL = [2.861743860038676, 2.8833691285024443, 2.905157812093143, 2.9271111456857857, 2.949230373486938, 2.971516749105227, 2.9939715356223946, 3.016596005664881, 3.03939144147595, 3.062359134988363, 3.085500387897595, 3.0970002585983964, 3.12, 3.162999741401603, 3.1659994828032065, 3.2199999999999998, 3.2514998707008016, 3.3110007757951894, 3.351998965606413, 3.43, 3.497000258598397, 3.5314998707008014, 3.601998965606413, 3.654000517196793, 3.7199999999999998, 3.7695009050943886, 3.7919989656064126, 3.821998965606413, 3.8435014222911814, 3.83899922420481, 3.9010007757951897, 3.9270002585983965, 3.934998707008017, 3.9259994828032063, 3.9440005171967933, 3.9495009050943883, 3.9449987070080166, 3.9380010343935865, 3.9570002585983968, 3.9329997414016034, 3.9529997414016034, 3.9332347426945957, 3.9135685689811224, 3.8940007261362166, 3.8745307225055354, 3.8551580688930076, 3.8358822785485422, 3.8167028671558, 3.797619352820021, 3.7786312560559208, 3.759738099775641]
@@ -316,7 +315,7 @@ with title:
             pass
         
         with col3:
-            st.image('2am.png')
+            st.image('logo.png')
 
         with col4:
             pass
@@ -589,16 +588,16 @@ with risk:
             with col1:
                 st.write('')
             with col2:
-                st.markdown(f"<h2 style='color:#800020;'>{round(values[-1], 1)}%<h2>", unsafe_allow_html=True)
+                st.markdown(f"<h2 style='color:#12317D;'>{round(values[-1], 1)}%<h2>", unsafe_allow_html=True)
 
 
             #st.markdown(f"<h4 style='color:#507796;'>Your risk of having a heart attack or stroke up to age 80 is: {round(values[-1], 1)}% <h4>", unsafe_allow_html=True)
             st.write('This estimated risk does not take into account the Lp(a) levels in your blood. To see how much your Lp(a) level increases your risk of having a heart attack or stroke, you can enter your Lp(a) level using the slider bar below. A new line will appear on the graph showing you how much your Lp(a) level increases your risk of having a heart attack or stroke.')
             units_lpa = st.radio("Lp(a) units:", ["nmol/L", "mg/dL"], horizontal = True)
             if units_lpa == "nmol/L":
-                lpa = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 500.0, [20.66, 16.6][sex])
+                lpa = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 500.0, [20.66, 16.6][sex], step=0.1, format = "%.1f")
             else:
-                LPA = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 250.0, [20.66/2.15, 16.6/2.15][sex])
+                LPA = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 250.0, [9.6, 7.7][sex], step=0.1, format = "%.1f")
                 lpa = LPA * 2.15
 
             #print('after: ', ', '.join([str(s) for s in [age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
@@ -658,7 +657,7 @@ with risk:
                     font = dict(size = 15),
                     xaxis_title="Age (years)",
                     yaxis_title="Risk (%)",
-                    xaxis_range=[age, 80],
+                    xaxis_range=[age, 81],
                     yaxis_range=[0, round(max(all_values)) + 0.5],
                     legend = dict(
                      x=0,
@@ -674,15 +673,29 @@ with risk:
             lpa_chart_placeholder.plotly_chart(lpa_graph, config = config)
 
             if units_lpa == "nmol/L":
-                st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(lpa, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 increases from {round(values[-1], 1)}% to:<h4>", unsafe_allow_html=True)
-                col1, col2 = st.columns([6,8])
-                with col1:
-                    st.write(' ')
-                with col2:
-                    st.markdown(f"<h2 style='color:#800020;'>{round(values_lpa[-1], 1)}%<h2>", unsafe_allow_html=True)
+                if lpa != [20.66, 16.6][sex]:
+                    if lpa > [20.66, 16.6][sex]:
+                        st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(lpa, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 increases from {round(values[-1], 1)}% to:<h4>", unsafe_allow_html=True)
+                    else:
+                        st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(lpa, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 decreases from {round(values[-1], 1)}% to:<h4>", unsafe_allow_html=True)
+                        
+                    col1, col2 = st.columns([6,8])
+                    with col1:
+                        st.write(' ')
+                    with col2:
+                        st.markdown(f"<h2 style='color:#800020;'>{round(values_lpa[-1], 1)}%<h2>", unsafe_allow_html=True)
             else:
-                st.markdown(f"<h4 style='color:#507796;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
-                #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is **{round(values_lpa[-1], 1)}%**")
+                if LPA != [9.6, 7.7][sex]:
+                    if LPA > [9.6, 7.7][sex]:
+                        st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(LPA, 1)}  {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 increases from {round(values[-1], 1)}% to: <h4>", unsafe_allow_html=True)
+                    else:
+                        st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(LPA, 1)}  {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 decreases from {round(values[-1], 1)}% to: <h4>", unsafe_allow_html=True)
+                    col1, col2 = st.columns([6,8])
+                    with col1:
+                        st.write(' ')
+                    with col2:
+                        st.markdown(f"<h2 style='color:#800020;'>{round(values_lpa[-1], 1)}%<h2>", unsafe_allow_html=True) 
+                        #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is **{round(values_lpa[-1], 1)}%**")
         else:
             st.error("Please complete all the inputs in the boxes above.")
 
@@ -708,7 +721,21 @@ with risk:
 
         if SBP > 0.0 and LDL > 0.0 and age > 0 and sex != '' and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height > 0 and weight > 0:
             sbpldl_chart_placeholder = st.empty()
-            st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(lpa, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 is now: {round(values_lpa[-1], 1)}%<h4>", unsafe_allow_html=True)
+
+            if units_lpa == "nmol/L":
+                if lpa != [20.66, 16.6][sex]:
+                    if lpa > [20.66, 16.6][sex]:
+                        st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(lpa, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 increases from {round(values[-1], 1)}% to {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
+                    else:
+                        st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(lpa, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 decreases from {round(values[-1], 1)}% to {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
+
+            else:
+                if LPA != [9.6, 7.7][sex]:
+                    if LPA > [9.6, 7.7][sex]:
+                        st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(LPA, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 increases from {round(values[-1], 1)}% to {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
+                    else:
+                        st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(LPA, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 decreases from {round(values[-1], 1)}% to {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
+                        
             st.write('You can use the slider bars below to estimate how much you can reduce your risk of having a heart attack or stroke by lowering your LDL and blood pressure levels. After using the slider bars, a new line will appear on the graph showing you your risk of having a heart attack or stroke that includes both your Lp(a) level and the effect of lowering your LDL or blood pressure.')
 
             col1, col2 = st.columns(2)
@@ -798,7 +825,7 @@ with risk:
                     font = dict(size = 15),
                     xaxis_title="Age (years)",
                     yaxis_title="Risk (%)",
-                    xaxis_range=[age, 80],
+                    xaxis_range=[age, 81],
                     yaxis_range=[0, round(max(all_values)) + 0.5],
                     legend = dict(
                      x=0,
@@ -824,27 +851,57 @@ with risk:
             #    #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is **{round(values_lpa[-1], 1)}%**")
 
         
+            #lowering your LDL beginning at age [age}
+            #will reduce your risk to
+
+            if units_lpa == "nmol/L":
+                bottom_print_lpa = lpa
+            else:
+                bottom_print_lpa = LPA
 
             if units_LDL == "mmol/L":
                 if sbp_dec == 0 and ldl_dec != 0:
-                    st.markdown(f"<h4 style='color:#507796;'>Lowering your LDL by {ldl_dec} {units_LDL} reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
-                    #                             st.write(f"Your risk of having a heart attack or stroke after lowering LDL by {ldl_dec} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
+                    st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) of {round(bottom_print_lpa, 2)} {units_lpa} and an estimated risk of {round(values_lpa[-1], 1)}%, lowering your LDL by {ldl_dec} {units_LDL} beginning at age {age} will reduce your risk of having a heart attack or stroke to: <h4>", unsafe_allow_html=True)
+                    col1, col2 = st.columns([6, 8])
+                    with col2:
+                        st.markdown(f"<h2 style='color:#507796;'>{round(values_Rx[-1], 1)}%<h2>", unsafe_allow_html=True)
+
                 if sbp_dec != 0 and ldl_dec == 0:
-                    st.markdown(f"<h4 style='color:#507796;'>Lowering your SBP by {sbp_dec} mmHg reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) of {round(bottom_print_lpa, 2)} {units_lpa} and an estimated risk of {round(values_lpa[-1], 1)}%, lowering your SBP by {sbp_dec} mmHg beginning at age {age} will reduce your risk of having a heart attack or stroke to: <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is **{round(values_Rx[-1], 1)}%**")
+                    col1, col2 = st.columns([6, 8])
+                    with col2:
+                        st.markdown(f"<h2 style='color:#507796;'>{round(values_Rx[-1], 1)}%<h2>", unsafe_allow_html=True)
+                    
                 if sbp_dec != 0 and ldl_dec != 0:
-                    st.markdown(f"<h4 style='color:#507796;'>Lowering your LDL by {ldl_dec} {units_LDL} and your SBP by {sbp_dec} mmHg reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) of {round(bottom_print_lpa, 2)} {units_lpa} and an estimated risk of {round(values_lpa[-1], 1)}%, lowering your LDL by {ldl_dec} {units_LDL} and your SBP by {sbp_dec} mmHg beginning at age {age} will reduce your risk of having a heart attack or stroke to: <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {ldl_dec} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
+                    col1, col2 = st.columns([6, 8])
+                    with col2:
+                        st.markdown(f"<h2 style='color:#507796;'>{round(values_Rx[-1], 1)}%<h2>", unsafe_allow_html=True)
+
             else:
                 if sbp_dec == 0 and ldl_dec != 0:
-                    st.markdown(f"<h4 style='color:#507796;'>Lowering your LDL by {LDL_DEC} {units_LDL} reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) of {round(bottom_print_lpa, 2)}  {units_lpa} and an estimated risk of {round(values_lpa[-1], 1)}%, lowering your LDL by {LDL_DEC} {units_LDL} beginning at age {age} will reduce your risk of having a heart attack or stroke to: <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering LDL by {LDL_DEC} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
+                    col1, col2 = st.columns([6, 8])
+                    with col2:
+                        st.markdown(f"<h2 style='color:#507796;'>{round(values_Rx[-1], 1)}%<h2>", unsafe_allow_html=True)
+                    
                 if sbp_dec != 0 and ldl_dec == 0:
-                    st.markdown(f"<h4 style='color:#507796;'>Lowering your SBP by {sbp_dec} mmHg reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) of {round(bottom_print_lpa, 2)}  {units_lpa} and an estimated risk of {round(values_lpa[-1], 1)}%, lowering your SBP by {sbp_dec} mmHg beginning at age {age} will reduce your risk of having a heart attack or stroke to: <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is **{round(values_Rx[-1], 1)}%**")
+                    col1, col2 = st.columns([6, 8])
+                    with col2:
+                        st.markdown(f"<h2 style='color:#507796;'>{round(values_Rx[-1], 1)}%<h2>", unsafe_allow_html=True)
+                    
                 if sbp_dec != 0 and ldl_dec != 0:
-                    st.markdown(f"<h4 style='color:#507796;'>Lowering your LDL by {LDL_DEC} {units_LDL} and your SBP by {sbp_dec} mmHg reduces your risk of having a heart attack or stroke to {round(values_Rx[-1], 1)}% <h4>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) of {round(bottom_print_lpa, 2)}  {units_lpa} and an estimated risk of {round(values_lpa[-1], 1)}%, lowering your LDL by {LDL_DEC} {units_LDL} and your SBP by {sbp_dec} mmHg beginning at age {age} will reduce your risk of having a heart attack or stroke to: <h4>", unsafe_allow_html=True)
                     #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {LDL_DEC} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
+                    col1, col2 = st.columns([6, 8])
+                    with col2:
+                        st.markdown(f"<h2 style='color:#507796;'>{round(values_Rx[-1], 1)}%<h2>", unsafe_allow_html=True)
+                    
 
 
 
