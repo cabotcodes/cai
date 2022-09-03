@@ -236,6 +236,7 @@ hide_st_style = """
                 display: block;
                 position: relative;
                 padding: 5px;
+                top: 2px;
             }
             
             header {visibility: hidden;}
@@ -260,11 +261,6 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
-#        padding-top: 5rem;
-#        padding-right: 5rem;
-#        padding-left: 5rem;
-#        padding-bottom: 5rem;
-
 st.markdown(
         f"""
 <style>
@@ -272,7 +268,8 @@ st.markdown(
         max-width: 80%;
     }}
     img{{
-    	max-width:50%;
+    	max-width:40%;
+    	margin-bottom:0px;
     }}
 
     input:disabled{{
@@ -296,6 +293,7 @@ st.markdown(
 
 title = st.container()
 explanation = st.container()
+test = st.container()
 inputs = st.container()
 risk = st.container()
 text = st.container()
@@ -309,23 +307,24 @@ ref = st.container()
 with title:
         col1, col2, col3, col4, col5 = st.columns(5)        
         with col1:
-            pass
+            st.write(' ')
 
         with col2:
-            pass
-        
+            st.write(' ')
+
         with col3:
             st.image('logo.png')
 
         with col4:
-            pass
-        
+            st.write(' ')
+
         with col5:
-            pass
-        
+            st.write(' ')
+  
         st.markdown("<h2 style='text-align: center; color: #507796;'>Lp(a) Clinical Guidance<h2>", unsafe_allow_html=True)
         #st.markdown("<h6 style='text-align: center; color: grey;'>This website will help you estimate how much your Lp(a) level increases your risk of having a heart attack or stroke, and provide you with specific guidance about what you can do to lower your risk if your Lp(a) level is elevated.<h6>", unsafe_allow_html=True)
-        st.write('This website will help you determine how much your Lp(a) level increases your risk of having a heart attack or stroke, and provide you with specific guidance about what you can do to lower your risk if your Lp(a) level is elevated.')
+        st.write('Lp(a) is a cholesterol-carrying macromolecule circulating in the blood that can damage your arteries, causing a heart attack or stroke. The Lp(a) level in your blood is largely inherited. Indeed, high Lp(a) levels may be the most commonly inherited cause of heart attacks and strokes.')
+        st.write("This website will help you determine how much your Lp(a) level increases your risk of having a heart attack or stroke, and provide you with specific guidance about what you can do to lower your risk if your Lp(a) level is elevated.")
 #Risk and Benefit Algorithm using Causal AI
 #CONTAINER FOR TEXT EXPLANATION
 
@@ -333,10 +332,11 @@ with explanation:
         
         st.subheader("Estimating the risk of heart attack & stroke caused by Lp(a)")
         #st.write("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?")
-        st.write("Lp(a) is a cholesterol-carrying macromolecule that circulates in the blood and can damage your arteries, causing a heart attack or stroke. You can estimate how much your blood level of Lp(a) increases your risk of having a heart attack or stroke using this app.") 
         st.write("Please enter your health information in the boxes below. After you enter your information, a graph will appear to show you your estimated risk of having a heart attack, stroke, or undergoing a procedure to clear a blocked artery at any age up to age 80.")
         st.write("This estimated risk does not take into account your Lp(a) level. The only way to know how much your Lp(a) level increases your risk of having a heart attack or stroke is to measure it. Persons with high levels of Lp(a) may be at increased risk and not even know it.")
-        st.write("To see how much your Lp(a) level increases your risk of having a heart attack or stroke, you can enter your Lp(a) level using the slider bar below the graph. The graph will then show you how much your Lp(a) level increases your risk of having a heart attack or stroke.")
+        st.write("To see how much your Lp(a) level increases your risk of having a heart attack or stroke, enter your Lp(a) level using the slider bar below the graph. A second line will appear on the graph showing you how much your Lp(a) level increases your risk of having a heart attack or stroke. ")
+        
+        
         
 # CONTAINER PURELY FOR TESTING. WILL BE COMMENTED OUT
 
@@ -575,14 +575,6 @@ with risk:
 
         ####################################################################################
 
-
-            #col1, col2 = st.columns([6,1])
-            #with col1:
-            #    st.markdown(f"<h4 style='color:#507796;'>Your risk of having a heart attack or stroke up to age 80 is:<h4>", unsafe_allow_html=True)
-            #with col2:
-            #    st.markdown(f"<h4 style='color:#800020;'>{round(values[-1], 1)}%<h4>", unsafe_allow_html=True)
-                
-
             st.markdown(f"<h4 style='color:#507796;'>Your risk of having a heart attack or stroke up to age 80 is:<h4>", unsafe_allow_html=True)
             col1, col2 = st.columns([6, 8])
             with col1:
@@ -590,14 +582,12 @@ with risk:
             with col2:
                 st.markdown(f"<h2 style='color:#12317D;'>{round(values[-1], 1)}%<h2>", unsafe_allow_html=True)
 
-
-            #st.markdown(f"<h4 style='color:#507796;'>Your risk of having a heart attack or stroke up to age 80 is: {round(values[-1], 1)}% <h4>", unsafe_allow_html=True)
-            st.write('This estimated risk does not take into account the Lp(a) levels in your blood. To see how much your Lp(a) level increases your risk of having a heart attack or stroke, you can enter your Lp(a) level using the slider bar below. A new line will appear on the graph showing you how much your Lp(a) level increases your risk of having a heart attack or stroke.')
+            st.write('This estimated risk does not take into account the Lp(a) levels in your blood. To see how much your Lp(a) level increases your risk of having a heart attack or stroke, enter your Lp(a) level using the slider bar below. A new line will appear on the graph showing you how much your Lp(a) level increases your risk of having a heart attack or stroke at all ages up to age 80.')
             units_lpa = st.radio("Lp(a) units:", ["nmol/L", "mg/dL"], horizontal = True)
             if units_lpa == "nmol/L":
-                lpa = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 500.0, [20.66, 16.6][sex], step=0.1, format = "%.1f")
+                lpa = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 500.0, [20.66, 16.6][sex], step = 0.1, format = "%.1f")
             else:
-                LPA = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 250.0, [9.6, 7.7][sex], step=0.1, format = "%.1f")
+                LPA = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 250.0, [9.6, 7.7][sex], step = 0.1, format = "%.1f")
                 lpa = LPA * 2.15
 
             #print('after: ', ', '.join([str(s) for s in [age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
@@ -696,6 +686,7 @@ with risk:
                     with col2:
                         st.markdown(f"<h2 style='color:#800020;'>{round(values_lpa[-1], 1)}%<h2>", unsafe_allow_html=True) 
                         #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is **{round(values_lpa[-1], 1)}%**")
+
         else:
             st.error("Please complete all the inputs in the boxes above.")
 
@@ -708,14 +699,12 @@ with risk:
         st.write(' ')
         st.subheader('What to do if your Lp(a) level increases your risk of having a heart attack or stroke')
 
-        st.write('First, it is important to be aware that the level of Lp(a) in your blood is mostly inherited. If you have high blood levels of Lp(a), then other members of your family may also be at increased risk of heart attack or stroke because of high Lp(a) levels. Indeed, high Lp(a) levels may be the most commonly inherited cause of heart attacks and strokes. So, if your Lp(a) level is elevated, or if your risk of heart attack and stroke is increased by your Lp(a) levels, other members of your family may benefit from measuring their Lp(a) levels to determine if they are at increased risk.')
-        st.write('However, you can still reduce your risk of having a heart attack or stroke despite having high Lp(a) levels. Unfortunately, Lp(a) levels in the blood cannot be lowered by diet or exercise. In addition, there are no approved medicines that specifically lower Lp(a) levels. However, new very powerful Lp(a) lowering therapies are currently in development. ')  
-        st.write('If your risk of heart attack and stroke is increased by your Lp(a) level, then current clinical practice guidelines recommend that you should more intensely lower other causes of heart attack and stroke, such as your LDL or blood pressure level. Although lowering LDL and blood pressure will not lower your Lp(a) level, it will reduce your overall risk of having a heart attack and stroke.')              
-        #st.write('Using the slider bars below, you can estimate how much you need to lower your LDL or blood pressure to reduce your risk of heart attack and stroke by the same amount as the increased risk caused by your Lp(a) levels.') 
-        st.write('Using the slider bars below, you can estimate how much you would have to lower your LDL or blood pressure to reduce your risk of heart attack and stroke by the same amount as the increased risk caused by your Lp(a) level. This information can help guide you about how much more intensely you need to lower your LDL and blood pressure level to improve your cardiovascular health despite having high Lp(a) levels.')
-
+        st.write('First, it is important to be aware that the level of Lp(a) in your blood is mostly inherited. If you have high blood levels of Lp(a), then other members of your family may also be at increased risk of heart attack or stroke because of high Lp(a) levels. So, if your Lp(a) level is elevated, or if your risk of heart attack and stroke is increased by your Lp(a) levels, then other members of your family may also benefit from measuring their Lp(a) levels to determine if they are at increased risk.')
+        st.write('Unfortunately, Lp(a) levels in the blood cannot be lowered by diet or exercise. In addition, there are no approved medicines that specifically lower Lp(a) levels. Fortunately, new very powerful Lp(a) lowering therapies are currently in development.')
+        st.write('However, until those medications become available, you can still reduce your risk of having a heart attack or stroke despite having high Lp(a) levels. Current clinical practice guidelines recommend that if you are at increased risk of heart attack and stroke caused by elevated Lp(a) levels, then you should more intensely lower other causes of heart attack and stroke, such as your LDL or blood pressure level.')
+        st.write('Although lowering LDL and blood pressure will not lower your Lp(a) level, it will reduce your overall risk of having a heart attack and stroke.')
+        st.write('Using the slider bars below, you can estimate how much you would have to lower your LDL or blood pressure to reduce your risk of heart attack and stroke by about the same amount as the increased risk caused by your Lp(a) level. This information can help guide you about how much *more intensely* you need to lower your LDL and blood pressure *beyond current recommendations* to improve your cardiovascular health despite having high Lp(a) levels.')
         st.write(' ')
-        #st.write('** How much more intensely should I lower my LDL or blood pressure if I have an increased risk of heart attack and stroke caused by high Lp(a)?')
 
     ####################################################################################
 
@@ -737,6 +726,8 @@ with risk:
                         st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) level of {round(LPA, 2)} {units_lpa}, your estimated risk of having a heart attack or stroke up to age 80 decreases from {round(values[-1], 1)}% to {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
                         
             st.write('You can use the slider bars below to estimate how much you can reduce your risk of having a heart attack or stroke by lowering your LDL and blood pressure levels. After using the slider bars, a new line will appear on the graph showing you your risk of having a heart attack or stroke that includes both your Lp(a) level and the effect of lowering your LDL or blood pressure.')
+            st.write(' ')
+            st.write('When the light blue line and the dark blue line overlap, this is the amount you have to reduce your LDL or blood pressure in order to compensate for the increased risk caused by your Lp(a) levels.')
 
             col1, col2 = st.columns(2)
             with col1:
@@ -841,19 +832,6 @@ with risk:
             sbpldl_chart_placeholder.plotly_chart(sbpldl_graph, config = config)
 
             
-
-            #LPA message in second graph (can comment out if needed)
-            #if units_lpa == "nmol/L":
-            #    st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(lpa, 2)} {units_lpa} is {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
-            #    #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(lpa, 2)} {units_lpa} is **{round(values_lpa[-1], 1)}**%")
-            #else:
-            #    st.markdown(f"<h4 style='color:#1d3b8f;'>Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is {round(values_lpa[-1], 1)}% <h4>", unsafe_allow_html=True)
-            #    #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is **{round(values_lpa[-1], 1)}%**")
-
-        
-            #lowering your LDL beginning at age [age}
-            #will reduce your risk to
-
             if units_lpa == "nmol/L":
                 bottom_print_lpa = lpa
             else:
@@ -901,7 +879,6 @@ with risk:
                     col1, col2 = st.columns([6, 8])
                     with col2:
                         st.markdown(f"<h2 style='color:#507796;'>{round(values_Rx[-1], 1)}%<h2>", unsafe_allow_html=True)
-                    
 
 
 
@@ -911,18 +888,26 @@ with risk:
 # END OF TEST
 with ref:
         st.subheader("Reducing your risk of heart attack and stroke")
-        st.write('When the light blue line and the dark blue line overlap, this is the amount you have to reduce your LDL or blood pressure in order to compensate for the increased risk caused by your Lp(a) levels.')
-        st.write('However, lowering LDL and systolic blood pressure does not reduce your Lp(a) levels. As a result, Lp(a) is still circulating in your blood and can damage your arteries. For that reason, the best way to reduce your risk of having a heart attack or stroke caused by Lp(a) is with a medicine that directly lowers Lp(a).')
-        st.write('Potent Lp(a) lowering therapies are currently being developed. Hopefully, these will become available soon and can be used to reduce the risk of heart attack and stroke among persons with high Lp(a) levels.')
+        st.write('Because lowering LDL and systolic blood pressure does not reduce your Lp(a) levels, Lp(a) is still circulating in your blood and can damage your arteries. For that reason, the best way to reduce your risk of having a heart attack or stroke caused by Lp(a) is with a medicine that directly lowers Lp(a).')
+        st.write('Potent Lp(a) lowering therapies are currently being developed. Hopefully, these new therapies will become available soon and can be used to directly reduce the risk of heart attack and stroke among persons with high Lp(a) levels.')
 
 
         st.write(' ')
         st.subheader('Further information')
-        st.caption('For further information about the importance of Lipoprotein(a), with recommendations on what to measure, in whom to measure, how to interpret and what to do, read the EAS Consensus Position Paper:  https://doi.org/10.1093/eurheartj/ehac361')
+        st.caption('For the latest practical and scientific information about Lp(a), please read the new updated 2022 European Atherosclerosis Society (EAS) International Expert Consensus Statement on Lp(a), which can be found here: https://doi.org/10.1093/eurheartj/ehac361')
         st.caption('Additional information about how to reduce your risk of having a heart attack or stroke is provided in the 2019 ESC/EAS Clinical Practice Guidelines and in the EAS Expert Consensus Statement on LDL listed below.')
         st.caption('1. Lipoprotein(a) in atherosclerotic cardiovascular disease and aortic stenosis: a European Atherosclerosis Society consensus statement,'
                    'European Heart Journal, 2022.')
         st.caption('2. 2019 ESC/EAS Guidelines for the management of dyslipidaemias: lipid modification to reduce cardiovascular risk. Eur Heart J. 2020 Jan 1;41(1):111-188. doi: 10.1093/eurheartj/ehz455.')
         st.caption('3. Low-density lipoproteins cause atherosclerotic cardiovascular disease. 1. Evidence from genetic, epidemiologic, and clinical studies. A consensus statement from the European Atherosclerosis Society Consensus Panel. Eur Heart J. 2017 21;38(32):2459-2472. doi: 10.1093/eurheartj/ehx144.')
+        st.write(' ')
 
+        st.subheader("About Causal AI")
+        st.caption('Causal AI is the next generation of artifical intelligence (AI) that embeds causal reasoning and causal effects into an ensemble of AI algorithms. Adding causal effects enables AI to go beyond simple prediction to prescribe specific actions that can change outcomes.')
+        st.caption('This AI application embeds the causal effects of Lp(a), LDL, and SBP on the risk of having a heart attack or stroke. Including causal effects in discrete time-units of exposure to reflect the biology of how atherosclerosis develops permits an accurate prediction of the risk caused by your Lp(a), LDL, and SBP levels - in the context of all your other risk factors - and an accurate estimate of the benefit you can achieve by lowering your Lp(a), LDL, and SBP beginning at any age and extending for any duration. This information can then be used to prescribe specific actions to personalize the prevention of cardiovascular disease and introduce the era of precision cardiovascular health.')
+        st.caption('Further information can be found at:')
+        st.caption('   Causal AI substantially improves the validity of estimating cardiovascular risk and benefit. Ference TB, Sniderman AD, Deanfield JD, Catapano AL, and Ference BA, Presented as a HOTLINE Late Breaking Clinical Trial at the 2022 European Society of Cardiology Annual Scientific Congress in Barcelona on 28 August 2022')
+        st.caption('Available at the ESC 2022 website: www.escardio.org/Congresses-&-Events/ESC-Congress')
+        
 
+        

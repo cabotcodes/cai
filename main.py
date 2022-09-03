@@ -370,8 +370,6 @@ with inputs:
         sex = st.selectbox("Sex", ('', 'Male', 'Female'))
         if sex != '':
             sex = int(sex == 'Male')
-        else:
-            sex = 1
 
         age = st.number_input('Age (years) (ages 30-80)', value = 30, step = 1)
         if age < 30 or age > 80:
@@ -379,28 +377,28 @@ with inputs:
         
         st.write('Cholesterol')
         if units_LDL == "mmol/L":            
-            TC = st.number_input('Total Cholesterol (mmol/L) (range 3.5 - 8.0)', value = [5.9, 5.5][sex], step = 0.1)
+            TC = st.number_input('Total Cholesterol (mmol/L) (range 3.5 - 8.0)', value = [5.9, 5.5][1], step = 0.1)
             if TC != 0.0 and TC < 3.5 or TC > 8.0:
                 st.error("Please enter a number in the correct range.")
 
-            LDL = st.number_input('LDL Cholesterol (mmol/L) (range 2.0 - 5.0)', value = [3.5, 3.5][sex], step = 0.1)
+            LDL = st.number_input('LDL Cholesterol (mmol/L) (range 2.0 - 5.0)', value = [3.5, 3.5][1], step = 0.1)
             if LDL != 0.0 and LDL < 2.0 or LDL > 5.0:
                 st.error("Please enter a number in the correct range.")
 
-            HDL = st.number_input('HDL Cholesterol (mmol/L) (range 0.6 - 2.8)', value = [1.6, 1.2][sex], step = 0.1)
+            HDL = st.number_input('HDL Cholesterol (mmol/L) (range 0.6 - 2.8)', value = [1.6, 1.2][1], step = 0.1)
             if HDL != 0.0 and HDL < 0.6 or HDL > 2.8:
                 st.error("Please enter a number in the correct range.")
 
         else:
-            TC = st.number_input('Total Cholesterol (mg/dL) (range 135 - 300)', value = [228.2, 212.7][sex], step = 0.1)
+            TC = st.number_input('Total Cholesterol (mg/dL) (range 135 - 300)', value = [228.2, 212.7][1], step = 0.1)
             if TC != 0.0 and TC < 135 or TC > 300:
                 st.error("Please enter a number in the correct range.")
 
-            LDL = st.number_input('LDL Cholesterol (mg/dL) (range 80 - 200)', value = [135.0, 135.0][sex], step = 0.1)
+            LDL = st.number_input('LDL Cholesterol (mg/dL) (range 80 - 200)', value = [135.0, 135.0][1], step = 0.1)
             if LDL != 0.0 and LDL < 80 or LDL > 200:
                 st.error("Please enter a number in the correct range.")
 
-            HDL = st.number_input('HDL Cholesterol (mg/dL) (range 25 - 100)', value = [61.9, 46.4][sex], step = 0.1)
+            HDL = st.number_input('HDL Cholesterol (mg/dL) (range 25 - 100)', value = [61.9, 46.4][1], step = 0.1)
             if HDL != 0.0 and HDL < 25 or HDL > 100:
                 st.error("Please enter a number in the correct range.")
 
@@ -414,7 +412,7 @@ with inputs:
         #    st.write('Non-HDL Cholesterol:')
         #apoB = st.number_input('apoB (mg/dL)', value = [106.1, 107.6][sex], step = 0.1)
 
-        SBP = st.number_input('Systolic Blood Pressure (mmHg) (range 90 - 200)', value = [135, 135][sex])
+        SBP = st.number_input('Systolic Blood Pressure (mmHg) (range 90 - 200)', value = [135, 135][1])
         if SBP != 0.0 and SBP < 90 or SBP > 200:
             st.error("Please enter a number in the correct range.")
         
@@ -428,14 +426,14 @@ with inputs:
         #st.write('BMI (kg/m²)')
 
         if units_height == "cm":
-            height = st.number_input('Height (cm)', value = [163.0, 176.0][sex], step = 0.1)
+            height = st.number_input('Height (cm)', value = [163.0, 176.0][1], step = 0.1)
         else:
-            height = st.number_input('Height (in)', value = [64.2, 69.3][sex], step = 0.1)
+            height = st.number_input('Height (in)', value = [64.2, 69.3][1], step = 0.1)
         
         if units_weight == "kg":
-            weight = st.number_input('Weight (kg)', value = [71.0, 85.0][sex], step = 0.1)
+            weight = st.number_input('Weight (kg)', value = [71.0, 85.0][1], step = 0.1)
         else:
-            weight = st.number_input('Weight (lbs)', value = [156.2, 187.0][sex], step = 0.1)
+            weight = st.number_input('Weight (lbs)', value = [156.2, 187.0][1], step = 0.1)
 
         st.write('Your BMI is calculated as: ')
         
@@ -479,6 +477,44 @@ with inputs:
 
 config = {'displayModeBar': False}#, 'staticPlot': True}
 
+LDL_in_range = True
+HDL_in_range = True
+TC_in_range = True
+
+if units_LDL == "mmol/L":            
+    if TC < 3.5 or TC > 8.0:
+        TC_in_range = False
+    if LDL < 2.0 or LDL > 5.0:
+        LDL_in_range = False
+    if HDL < 0.6 or HDL > 2.8:
+        HDL_in_range = False
+else:
+    if TC < 135 or TC > 300:
+        TC_in_range = False
+    if LDL < 80 or LDL > 200:
+        LDL_in_range = False
+    if HDL < 25 or HDL > 100:
+        HDL_in_range = False
+
+
+height_in_range = True
+weight_in_range = True
+
+if units_height == "in":
+    if height < 48 or height > 84:
+        height_in_range = False
+else:
+    if height < 48 * 2.54 or height > 84 * 2.54:
+        height_in_range = False
+
+
+if units_weight == "lbs":
+    if weight < 80 or weight > 400:
+        weight_in_range = False
+else:
+    if weight < 80/2.2 or weight > 400/2.2:
+        weight_in_range = False
+
 with risk:
     if 'pressed' in st.session_state and st.session_state.pressed:
         #st.write(st.session_state)
@@ -487,7 +523,7 @@ with risk:
         st.write(' ')
         #st.write('** Your risk of having a heart attack, stroke or coronary revascularization procedure')
         lpa_chart_placeholder = st.empty()
-        if SBP > 0.0 and LDL > 0.0 and age > 0 and sex != '' and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height > 0 and weight > 0:
+        if sex != '' and SBP in range(90, 200) and LDL_in_range and HDL_in_range and TC_in_range and age in range(30, 80) and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height_in_range and weight_in_range:
 
             if units_LDL == "mmol/L":
                 ldl = LDL
@@ -708,7 +744,7 @@ with risk:
 
     ####################################################################################
 
-        if SBP > 0.0 and LDL > 0.0 and age > 0 and sex != '' and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height > 0 and weight > 0:
+        if sex != ''  and SBP > 0.0 and LDL > 0.0 and age in range(30, 80) and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height > 0 and weight > 0:
             sbpldl_chart_placeholder = st.empty()
 
             if units_lpa == "nmol/L":
@@ -728,7 +764,7 @@ with risk:
             st.write('You can use the slider bars below to estimate how much you can reduce your risk of having a heart attack or stroke by lowering your LDL and blood pressure levels. After using the slider bars, a new line will appear on the graph showing you your risk of having a heart attack or stroke that includes both your Lp(a) level and the effect of lowering your LDL or blood pressure.')
             st.write(' ')
             st.write('When the light blue line and the dark blue line overlap, this is the amount you have to reduce your LDL or blood pressure in order to compensate for the increased risk caused by your Lp(a) levels.')
-
+            st.write(' ')
             col1, col2 = st.columns(2)
             with col1:
                 if units_LDL == "mmol/L":
