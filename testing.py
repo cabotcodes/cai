@@ -161,7 +161,7 @@ def calculate(age, sex, ldl, ldl_rx, ldl_dec, age_start_rx_ldl, age_stop_rx_ldl,
 
         lnRR_a_list.append(sum(a_sums[8:]))
         lnRR_b_list.append(sum(b_sums))
-        #print()
+
     for i in range(81 - 30):
         lnRR_a[i] = lnRR_a_list[i]
         lnRR_b[i] = lnRR_b_list[i]
@@ -370,37 +370,35 @@ with inputs:
         sex = st.selectbox("Sex", ('', 'Male', 'Female'))
         if sex != '':
             sex = int(sex == 'Male')
-        else:
-            sex = 1
 
-        age = st.number_input('Age (years) (ages 30-80)', value = 30, step = 1)
-        if age < 30 or age > 80:
+        age = st.number_input('Age (years) (ages 30-75)', value = 30, step = 1)
+        if age < 30 or age > 75:
             st.error("Please enter a number in the correct range.")
         
         st.write('Cholesterol')
         if units_LDL == "mmol/L":            
-            TC = st.number_input('Total Cholesterol (mmol/L) (range 3.5 - 8.0)', value = [5.9, 5.5][sex], step = 0.1)
+            TC = st.number_input('Total Cholesterol (mmol/L) (range 3.5 - 8.0)', value = [5.9, 5.5][1], step = 0.1)
             if TC != 0.0 and TC < 3.5 or TC > 8.0:
                 st.error("Please enter a number in the correct range.")
 
-            LDL = st.number_input('LDL Cholesterol (mmol/L) (range 2.0 - 5.0)', value = [3.5, 3.5][sex], step = 0.1)
+            LDL = st.number_input('LDL Cholesterol (mmol/L) (range 2.0 - 5.0)', value = [3.5, 3.5][1], step = 0.1)
             if LDL != 0.0 and LDL < 2.0 or LDL > 5.0:
                 st.error("Please enter a number in the correct range.")
 
-            HDL = st.number_input('HDL Cholesterol (mmol/L) (range 0.6 - 2.8)', value = [1.6, 1.2][sex], step = 0.1)
+            HDL = st.number_input('HDL Cholesterol (mmol/L) (range 0.6 - 2.8)', value = [1.6, 1.2][1], step = 0.1)
             if HDL != 0.0 and HDL < 0.6 or HDL > 2.8:
                 st.error("Please enter a number in the correct range.")
 
         else:
-            TC = st.number_input('Total Cholesterol (mg/dL) (range 135 - 300)', value = [228.2, 212.7][sex], step = 0.1)
+            TC = st.number_input('Total Cholesterol (mg/dL) (range 135 - 300)', value = [228.2, 212.7][1], step = 0.1)
             if TC != 0.0 and TC < 135 or TC > 300:
                 st.error("Please enter a number in the correct range.")
 
-            LDL = st.number_input('LDL Cholesterol (mg/dL) (range 80 - 200)', value = [135.0, 135.0][sex], step = 0.1)
+            LDL = st.number_input('LDL Cholesterol (mg/dL) (range 80 - 200)', value = [135.0, 135.0][1], step = 0.1)
             if LDL != 0.0 and LDL < 80 or LDL > 200:
                 st.error("Please enter a number in the correct range.")
 
-            HDL = st.number_input('HDL Cholesterol (mg/dL) (range 25 - 100)', value = [61.9, 46.4][sex], step = 0.1)
+            HDL = st.number_input('HDL Cholesterol (mg/dL) (range 25 - 100)', value = [61.9, 46.4][1], step = 0.1)
             if HDL != 0.0 and HDL < 25 or HDL > 100:
                 st.error("Please enter a number in the correct range.")
 
@@ -414,7 +412,7 @@ with inputs:
         #    st.write('Non-HDL Cholesterol:')
         #apoB = st.number_input('apoB (mg/dL)', value = [106.1, 107.6][sex], step = 0.1)
 
-        SBP = st.number_input('Systolic Blood Pressure (mmHg) (range 90 - 200)', value = [135, 135][sex])
+        SBP = st.number_input('Systolic Blood Pressure (mmHg) (range 90 - 200)', value = [135, 135][1])
         if SBP != 0.0 and SBP < 90 or SBP > 200:
             st.error("Please enter a number in the correct range.")
         
@@ -428,14 +426,14 @@ with inputs:
         #st.write('BMI (kg/m²)')
 
         if units_height == "cm":
-            height = st.number_input('Height (cm)', value = [163.0, 176.0][sex], step = 0.1)
+            height = st.number_input('Height (cm)', value = [163.0, 176.0][1], step = 0.1)
         else:
-            height = st.number_input('Height (in)', value = [64.2, 69.3][sex], step = 0.1)
+            height = st.number_input('Height (in)', value = [64.2, 69.3][1], step = 0.1)
         
         if units_weight == "kg":
-            weight = st.number_input('Weight (kg)', value = [71.0, 85.0][sex], step = 0.1)
+            weight = st.number_input('Weight (kg)', value = [71.0, 85.0][1], step = 0.1)
         else:
-            weight = st.number_input('Weight (lbs)', value = [156.2, 187.0][sex], step = 0.1)
+            weight = st.number_input('Weight (lbs)', value = [156.2, 187.0][1], step = 0.1)
 
         st.write('Your BMI is calculated as: ')
         
@@ -479,6 +477,44 @@ with inputs:
 
 config = {'displayModeBar': False}#, 'staticPlot': True}
 
+LDL_in_range = True
+HDL_in_range = True
+TC_in_range = True
+
+if units_LDL == "mmol/L":            
+    if TC < 3.5 or TC > 8.0:
+        TC_in_range = False
+    if LDL < 2.0 or LDL > 5.0:
+        LDL_in_range = False
+    if HDL < 0.6 or HDL > 2.8:
+        HDL_in_range = False
+else:
+    if TC < 135 or TC > 300:
+        TC_in_range = False
+    if LDL < 80 or LDL > 200:
+        LDL_in_range = False
+    if HDL < 25 or HDL > 100:
+        HDL_in_range = False
+
+
+height_in_range = True
+weight_in_range = True
+
+if units_height == "in":
+    if height < 48 or height > 84:
+        height_in_range = False
+else:
+    if height < 48 * 2.54 or height > 84 * 2.54:
+        height_in_range = False
+
+
+if units_weight == "lbs":
+    if weight < 80 or weight > 400:
+        weight_in_range = False
+else:
+    if weight < 80/2.2 or weight > 400/2.2:
+        weight_in_range = False
+
 with risk:
     if 'pressed' in st.session_state and st.session_state.pressed:
         #st.write(st.session_state)
@@ -487,7 +523,7 @@ with risk:
         st.write(' ')
         #st.write('** Your risk of having a heart attack, stroke or coronary revascularization procedure')
         lpa_chart_placeholder = st.empty()
-        if SBP > 0.0 and LDL > 0.0 and age > 0 and sex != '' and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height > 0 and weight > 0:
+        if sex != '' and SBP in range(90, 201) and LDL_in_range and HDL_in_range and TC_in_range and age in range(30, 76) and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height_in_range and weight_in_range:
 
             if units_LDL == "mmol/L":
                 ldl = LDL
@@ -506,7 +542,6 @@ with risk:
             values = [num * 100 for num in riskList][:-1][age-30:]
             ageList = [a for a in range(30, 81)][age-30:]
 
-            #print(riskList)
 
             x_base = ageList
             y_base = values
@@ -587,12 +622,9 @@ with risk:
             if units_lpa == "nmol/L":
                 lpa = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 500.0, [20.66, 16.6][sex], step = 0.1, format = "%.1f")
             else:
-                LPA = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 250.0, [9.6, 7.7][sex], step = 0.1, format = "%.1f")
+                LPA = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 250.0, [20.66, 16.6][sex]/2.15, step = 0.1, format = "%.1f")
                 lpa = LPA * 2.15
 
-            #print('after: ', ', '.join([str(s) for s in [age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
-            #      hdl, SBP, 0, 0, age_from_sbp, age_to_sbp,
-            #      smoke, fmr_tob, diab, BMI, famhx, lpa]]))
             
             riskList_lpa = calculate(age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
                                      hdl, SBP, 0, 0, age_from_sbp, age_to_sbp,
@@ -601,25 +633,25 @@ with risk:
             riskList_lpa = riskList_lpa[0]
             values_lpa = [num * 100 for num in riskList_lpa][:-1][age-30:]
 
-            #print(riskList_lpa)
 
             x_lpa = ageList
             y_lpa = values_lpa
 
             all_values = values + values_lpa
-            
 
-            lpa_graph.add_trace(go.Scatter(
-                x = x_lpa,
-                y = y_lpa,
-                line_color = 'rgb(214, 14, 14)',
-                mode='lines',
-                name='Your risk including the effect of Lp(a)',
-                hovertemplate="<br>".join(
-                    ["Age: %{x}",
-                     "Risk: %{y:.1f}%",]
-                    )
-                ))
+            if values != values_lpa:
+                lpa_graph.add_trace(go.Scatter(
+                    x = x_lpa,
+                    y = y_lpa,
+                    line_color = 'rgb(214, 14, 14)',
+                    mode='lines',
+                    name='Your risk including the effect of Lp(a)',
+                    hovertemplate="<br>".join(
+                        ["Age: %{x}",
+                         "Risk: %{y:.1f}%",]
+                        )
+                    ))
+          
 
             lpa_graph.add_trace(go.Scatter(
                 x = x_base,
@@ -638,6 +670,7 @@ with risk:
             st.cache()
 
             lpa_graph.update_layout(
+                    showlegend = True,
                     hovermode="x",
                     title_x=0.5,
                     hoverlabel=dict(
@@ -647,7 +680,7 @@ with risk:
                     font = dict(size = 15),
                     xaxis_title="Age (years)",
                     yaxis_title="Risk (%)",
-                    xaxis_range=[age, 81],
+                    xaxis_range=[age, 80.5],
                     yaxis_range=[0, round(max(all_values)) + 0.5],
                     legend = dict(
                      x=0,
@@ -685,16 +718,10 @@ with risk:
                         st.write(' ')
                     with col2:
                         st.markdown(f"<h2 style='color:#800020;'>{round(values_lpa[-1], 1)}%<h2>", unsafe_allow_html=True) 
-                        #st.write(f"Your risk of having a heart attack or stroke with an Lp(a) value of {round(LPA, 2)}  {units_lpa} is **{round(values_lpa[-1], 1)}%**")
 
         else:
             st.error("Please complete all the inputs in the boxes above.")
 
-
-            #st.write('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.')
-            #slide = st.slider('', 0, 130, 25)
-        #else:
-            #st.write("You must enter your age, sex, LDL and SBP levels to estimate your risk.")
 
         st.write(' ')
         st.subheader('What to do if your Lp(a) level increases your risk of having a heart attack or stroke')
@@ -708,7 +735,7 @@ with risk:
 
     ####################################################################################
 
-        if SBP > 0.0 and LDL > 0.0 and age > 0 and sex != '' and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height > 0 and weight > 0:
+        if sex != '' and SBP in range(90, 201) and LDL_in_range and HDL_in_range and TC_in_range and age in range(30, 76) and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height_in_range and weight_in_range:
             sbpldl_chart_placeholder = st.empty()
 
             if units_lpa == "nmol/L":
@@ -728,7 +755,7 @@ with risk:
             st.write('You can use the slider bars below to estimate how much you can reduce your risk of having a heart attack or stroke by lowering your LDL and blood pressure levels. After using the slider bars, a new line will appear on the graph showing you your risk of having a heart attack or stroke that includes both your Lp(a) level and the effect of lowering your LDL or blood pressure.')
             st.write(' ')
             st.write('When the light blue line and the dark blue line overlap, this is the amount you have to reduce your LDL or blood pressure in order to compensate for the increased risk caused by your Lp(a) levels.')
-
+            st.write(' ')
             col1, col2 = st.columns(2)
             with col1:
                 if units_LDL == "mmol/L":
@@ -738,7 +765,6 @@ with risk:
                     ldl_dec = LDL_DEC / 38.67
 
             with col2:
-                #st.write('How much should I lower my blood pressure?')
                 sbp_dec = st.slider('How much should I lower my blood pressure?', 0, 15, 0, step = 1)
 
 
@@ -764,31 +790,32 @@ with risk:
             all_values = values + values_lpa + values_Rx
             
 
-            
-            sbpldl_graph.add_trace(go.Scatter(
-                x = x_Rx,
-                y = y_Rx,
-                line_color = 'rgb(159, 190, 214)',
-                mode='lines',
-                name='Your risk including the effect of your Lp(a) <br> after lowering your LDL or blood pressure',
-                hovertemplate="<br>".join(
-                    ["Age: %{x}",
-                     "Risk: %{y:.1f}%",]
-                    )
-                ))
+            if values_lpa != values_Rx:
+                sbpldl_graph.add_trace(go.Scatter(
+                    x = x_Rx,
+                    y = y_Rx,
+                    line_color = 'rgb(159, 190, 214)',
+                    mode='lines',
+                    name='Your risk including the effect of your Lp(a) <br> after lowering your LDL or blood pressure',
+                    hovertemplate="<br>".join(
+                        ["Age: %{x}",
+                         "Risk: %{y:.1f}%",]
+                        )
+                    ))
 
+            if values != values_lpa:
+                sbpldl_graph.add_trace(go.Scatter(
+                    x = x_lpa,
+                    y = y_lpa,
+                    line_color = 'rgb(214, 14, 14)',
+                    mode='lines',
+                    name='Your risk including the effect of Lp(a)',
+                    hovertemplate="<br>".join(
+                        ["Age: %{x}",
+                         "Risk: %{y:.1f}%",]
+                        )
+                    ))
 
-            sbpldl_graph.add_trace(go.Scatter(
-                x = x_lpa,
-                y = y_lpa,
-                line_color = 'rgb(214, 14, 14)',
-                mode='lines',
-                name='Your risk including the effect of Lp(a)',
-                hovertemplate="<br>".join(
-                    ["Age: %{x}",
-                     "Risk: %{y:.1f}%",]
-                    )
-                ))
 
             sbpldl_graph.add_trace(go.Scatter(
                 x = x_base,
@@ -808,6 +835,7 @@ with risk:
             st.cache()
 
             sbpldl_graph.update_layout(hovermode="x",
+                    showlegend = True,
                     title_x=0.5,
                     hoverlabel=dict(
                      bgcolor="white",
@@ -816,7 +844,7 @@ with risk:
                     font = dict(size = 15),
                     xaxis_title="Age (years)",
                     yaxis_title="Risk (%)",
-                    xaxis_range=[age, 81],
+                    xaxis_range=[age, 80.5],
                     yaxis_range=[0, round(max(all_values)) + 0.5],
                     legend = dict(
                      x=0,
@@ -846,14 +874,14 @@ with risk:
 
                 if sbp_dec != 0 and ldl_dec == 0:
                     st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) of {round(bottom_print_lpa, 2)} {units_lpa} and an estimated risk of {round(values_lpa[-1], 1)}%, lowering your SBP by {sbp_dec} mmHg beginning at age {age} will reduce your risk of having a heart attack or stroke to: <h4>", unsafe_allow_html=True)
-                    #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is **{round(values_Rx[-1], 1)}%**")
+
                     col1, col2 = st.columns([6, 8])
                     with col2:
                         st.markdown(f"<h2 style='color:#507796;'>{round(values_Rx[-1], 1)}%<h2>", unsafe_allow_html=True)
                     
                 if sbp_dec != 0 and ldl_dec != 0:
                     st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) of {round(bottom_print_lpa, 2)} {units_lpa} and an estimated risk of {round(values_lpa[-1], 1)}%, lowering your LDL by {ldl_dec} {units_LDL} and your SBP by {sbp_dec} mmHg beginning at age {age} will reduce your risk of having a heart attack or stroke to: <h4>", unsafe_allow_html=True)
-                    #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {ldl_dec} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
+
                     col1, col2 = st.columns([6, 8])
                     with col2:
                         st.markdown(f"<h2 style='color:#507796;'>{round(values_Rx[-1], 1)}%<h2>", unsafe_allow_html=True)
@@ -861,31 +889,27 @@ with risk:
             else:
                 if sbp_dec == 0 and ldl_dec != 0:
                     st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) of {round(bottom_print_lpa, 2)}  {units_lpa} and an estimated risk of {round(values_lpa[-1], 1)}%, lowering your LDL by {LDL_DEC} {units_LDL} beginning at age {age} will reduce your risk of having a heart attack or stroke to: <h4>", unsafe_allow_html=True)
-                    #                             st.write(f"Your risk of having a heart attack or stroke after lowering LDL by {LDL_DEC} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
+
                     col1, col2 = st.columns([6, 8])
                     with col2:
                         st.markdown(f"<h2 style='color:#507796;'>{round(values_Rx[-1], 1)}%<h2>", unsafe_allow_html=True)
                     
                 if sbp_dec != 0 and ldl_dec == 0:
                     st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) of {round(bottom_print_lpa, 2)}  {units_lpa} and an estimated risk of {round(values_lpa[-1], 1)}%, lowering your SBP by {sbp_dec} mmHg beginning at age {age} will reduce your risk of having a heart attack or stroke to: <h4>", unsafe_allow_html=True)
-                    #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg is **{round(values_Rx[-1], 1)}%**")
+
                     col1, col2 = st.columns([6, 8])
                     with col2:
                         st.markdown(f"<h2 style='color:#507796;'>{round(values_Rx[-1], 1)}%<h2>", unsafe_allow_html=True)
                     
                 if sbp_dec != 0 and ldl_dec != 0:
                     st.markdown(f"<h4 style='color:#507796;'>With an Lp(a) of {round(bottom_print_lpa, 2)}  {units_lpa} and an estimated risk of {round(values_lpa[-1], 1)}%, lowering your LDL by {LDL_DEC} {units_LDL} and your SBP by {sbp_dec} mmHg beginning at age {age} will reduce your risk of having a heart attack or stroke to: <h4>", unsafe_allow_html=True)
-                    #                             st.write(f"Your risk of having a heart attack or stroke after lowering SBP by {sbp_dec} mmHg and LDL by {LDL_DEC} {units_LDL} is **{round(values_Rx[-1], 1)}%**")
+
                     col1, col2 = st.columns([6, 8])
                     with col2:
                         st.markdown(f"<h2 style='color:#507796;'>{round(values_Rx[-1], 1)}%<h2>", unsafe_allow_html=True)
 
 
 
-# TESTING 2 SLIDERS IN THE SAME LINE
-
-
-# END OF TEST
 with ref:
         st.subheader("Reducing your risk of heart attack and stroke")
         st.write('Because lowering LDL and systolic blood pressure does not reduce your Lp(a) levels, Lp(a) is still circulating in your blood and can damage your arteries. For that reason, the best way to reduce your risk of having a heart attack or stroke caused by Lp(a) is with a medicine that directly lowers Lp(a).')

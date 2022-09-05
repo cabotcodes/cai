@@ -336,19 +336,6 @@ with explanation:
         st.write("This estimated risk does not take into account your Lp(a) level. The only way to know how much your Lp(a) level increases your risk of having a heart attack or stroke is to measure it. Persons with high levels of Lp(a) may be at increased risk and not even know it.")
         st.write("To see how much your Lp(a) level increases your risk of having a heart attack or stroke, enter your Lp(a) level using the slider bar below the graph. A second line will appear on the graph showing you how much your Lp(a) level increases your risk of having a heart attack or stroke. ")
         
-        
-        
-# CONTAINER PURELY FOR TESTING. WILL BE COMMENTED OUT
-
-##with st.sidebar:
-##    add_radio = st.radio(
-##        "Choose a shipping method",
-##        ("Standard (5-15 days)", "Express (2-5 days)")
-##    )
-##    slide1 = st.slider('Input your value', 0, 100, 50)
-##    slide2 = st.slider('Input your value', 0, 20, 10)
-
-
 # CONTAINER FOR INPUTS
 with inputs:
 
@@ -361,7 +348,6 @@ with inputs:
     with unit_col3:
         units_weight = st.radio("Weight:", ["kg", "lbs"], horizontal = True)
         
-    #with st.form('Inputs'):
 
     col1, col2 = st.columns(2)
 
@@ -371,8 +357,8 @@ with inputs:
         if sex != '':
             sex = int(sex == 'Male')
 
-        age = st.number_input('Age (years) (ages 30-80)', value = 30, step = 1)
-        if age < 30 or age > 80:
+        age = st.number_input('Age (years) (ages 30-75)', value = 30, step = 1)
+        if age < 30 or age > 75:
             st.error("Please enter a number in the correct range.")
         
         st.write('Cholesterol')
@@ -406,19 +392,10 @@ with inputs:
         if TC != 0.0 and HDL != 0.0:
             nHDL = TC - HDL
 
-        #st.write(' ')
-        #    st.write('Non-HDL Cholesterol: ', round(nHDL, 2))
-        #else:
-        #    st.write('Non-HDL Cholesterol:')
-        #apoB = st.number_input('apoB (mg/dL)', value = [106.1, 107.6][sex], step = 0.1)
 
         SBP = st.number_input('Systolic Blood Pressure (mmHg) (range 90 - 200)', value = [135, 135][1])
         if SBP != 0.0 and SBP < 90 or SBP > 200:
             st.error("Please enter a number in the correct range.")
-        
-##        SBP = st.number_input('Systolic Blood Pressure (mmHg) (range 90 - 200)', value = [135, 135][sex], step = 0.1)
-##        if SBP != 0.0 and SBP < 90 or SBP > 200:
-##            st.error("Please enter a number in the correct range.")
         
         trtbp = st.selectbox("Are you taking a medicine to lower blood pressure?", ('', 'No', 'Yes'))
 
@@ -443,10 +420,6 @@ with inputs:
             st.text_input('BMI: ', value = BMI, disabled = True)
         else:
             st.text_input('BMI: ', disabled = True)
-
-        
-        #wcirc = st.number_input('Waist Circumference (cm) - if known', step = 0.1)
-        #hba1c = st.number_input('HbA1c (mmol/mol) - if known', step = 0.1)
 
         diab = st.selectbox("Do you have diabetes?", ('', 'No', 'Yes'))
         if diab != '':
@@ -516,14 +489,12 @@ else:
         weight_in_range = False
 
 with risk:
-    if 'pressed' in st.session_state and st.session_state.pressed:
-        #st.write(st.session_state)
-        
+    if 'pressed' in st.session_state and st.session_state.pressed:        
         st.write(' ')
         st.write(' ')
-        #st.write('** Your risk of having a heart attack, stroke or coronary revascularization procedure')
+
         lpa_chart_placeholder = st.empty()
-        if sex != '' and SBP in range(90, 200) and LDL_in_range and HDL_in_range and TC_in_range and age in range(30, 80) and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height_in_range and weight_in_range:
+        if sex != '' and SBP in range(90, 201) and LDL_in_range and HDL_in_range and TC_in_range and age in range(30, 76) and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height_in_range and weight_in_range:
 
             if units_LDL == "mmol/L":
                 ldl = LDL
@@ -623,12 +594,8 @@ with risk:
             if units_lpa == "nmol/L":
                 lpa = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 500.0, [20.66, 16.6][sex], step = 0.1, format = "%.1f")
             else:
-                LPA = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 250.0, [9.6, 7.7][sex], step = 0.1, format = "%.1f")
+                LPA = st.slider('Enter your Lp(a) level to see how much your Lp(a) level increases your risk of heart attack and stroke.', 0.0, 250.0, [20.66, 16.6][sex]/2.15, step = 0.1, format = "%.1f")
                 lpa = LPA * 2.15
-
-            #print('after: ', ', '.join([str(s) for s in [age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
-            #      hdl, SBP, 0, 0, age_from_sbp, age_to_sbp,
-            #      smoke, fmr_tob, diab, BMI, famhx, lpa]]))
             
             riskList_lpa = calculate(age, sex, ldl, 0, 0, age_from_ldl, age_to_ldl,
                                      hdl, SBP, 0, 0, age_from_sbp, age_to_sbp,
@@ -637,25 +604,25 @@ with risk:
             riskList_lpa = riskList_lpa[0]
             values_lpa = [num * 100 for num in riskList_lpa][:-1][age-30:]
 
-            #print(riskList_lpa)
 
             x_lpa = ageList
             y_lpa = values_lpa
 
             all_values = values + values_lpa
-            
 
-            lpa_graph.add_trace(go.Scatter(
-                x = x_lpa,
-                y = y_lpa,
-                line_color = 'rgb(214, 14, 14)',
-                mode='lines',
-                name='Your risk including the effect of Lp(a)',
-                hovertemplate="<br>".join(
-                    ["Age: %{x}",
-                     "Risk: %{y:.1f}%",]
-                    )
-                ))
+            if values != values_lpa:
+                lpa_graph.add_trace(go.Scatter(
+                    x = x_lpa,
+                    y = y_lpa,
+                    line_color = 'rgb(214, 14, 14)',
+                    mode='lines',
+                    name='Your risk including the effect of Lp(a)',
+                    hovertemplate="<br>".join(
+                        ["Age: %{x}",
+                         "Risk: %{y:.1f}%",]
+                        )
+                    ))
+
 
             lpa_graph.add_trace(go.Scatter(
                 x = x_base,
@@ -674,6 +641,7 @@ with risk:
             st.cache()
 
             lpa_graph.update_layout(
+                    showlegend = True,
                     hovermode="x",
                     title_x=0.5,
                     hoverlabel=dict(
@@ -683,7 +651,7 @@ with risk:
                     font = dict(size = 15),
                     xaxis_title="Age (years)",
                     yaxis_title="Risk (%)",
-                    xaxis_range=[age, 81],
+                    xaxis_range=[age, 80.5],
                     yaxis_range=[0, round(max(all_values)) + 0.5],
                     legend = dict(
                      x=0,
@@ -744,7 +712,7 @@ with risk:
 
     ####################################################################################
 
-        if sex != ''  and SBP > 0.0 and LDL > 0.0 and age in range(30, 80) and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height > 0 and weight > 0:
+        if sex != '' and SBP in range(90, 201) and LDL_in_range and HDL_in_range and TC_in_range and age in range(30, 76) and diab != '' and smoke != '' and fmr_tob != '' and famhx != '' and height_in_range and weight_in_range:
             sbpldl_chart_placeholder = st.empty()
 
             if units_lpa == "nmol/L":
@@ -800,31 +768,32 @@ with risk:
             all_values = values + values_lpa + values_Rx
             
 
-            
-            sbpldl_graph.add_trace(go.Scatter(
-                x = x_Rx,
-                y = y_Rx,
-                line_color = 'rgb(159, 190, 214)',
-                mode='lines',
-                name='Your risk including the effect of your Lp(a) <br> after lowering your LDL or blood pressure',
-                hovertemplate="<br>".join(
-                    ["Age: %{x}",
-                     "Risk: %{y:.1f}%",]
-                    )
-                ))
+            if values_lpa != values_Rx:
+                sbpldl_graph.add_trace(go.Scatter(
+                    x = x_Rx,
+                    y = y_Rx,
+                    line_color = 'rgb(159, 190, 214)',
+                    mode='lines',
+                    name='Your risk including the effect of your Lp(a) <br> after lowering your LDL or blood pressure',
+                    hovertemplate="<br>".join(
+                        ["Age: %{x}",
+                         "Risk: %{y:.1f}%",]
+                        )
+                    ))
 
+            if values != values_lpa:
+                sbpldl_graph.add_trace(go.Scatter(
+                    x = x_lpa,
+                    y = y_lpa,
+                    line_color = 'rgb(214, 14, 14)',
+                    mode='lines',
+                    name='Your risk including the effect of Lp(a)',
+                    hovertemplate="<br>".join(
+                        ["Age: %{x}",
+                         "Risk: %{y:.1f}%",]
+                        )
+                    ))
 
-            sbpldl_graph.add_trace(go.Scatter(
-                x = x_lpa,
-                y = y_lpa,
-                line_color = 'rgb(214, 14, 14)',
-                mode='lines',
-                name='Your risk including the effect of Lp(a)',
-                hovertemplate="<br>".join(
-                    ["Age: %{x}",
-                     "Risk: %{y:.1f}%",]
-                    )
-                ))
 
             sbpldl_graph.add_trace(go.Scatter(
                 x = x_base,
@@ -839,11 +808,10 @@ with risk:
                 ))
 
 
-
-
             st.cache()
 
             sbpldl_graph.update_layout(hovermode="x",
+                    showlegend = True,
                     title_x=0.5,
                     hoverlabel=dict(
                      bgcolor="white",
@@ -852,7 +820,7 @@ with risk:
                     font = dict(size = 15),
                     xaxis_title="Age (years)",
                     yaxis_title="Risk (%)",
-                    xaxis_range=[age, 81],
+                    xaxis_range=[age, 80.5],
                     yaxis_range=[0, round(max(all_values)) + 0.5],
                     legend = dict(
                      x=0,
